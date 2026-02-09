@@ -16,6 +16,8 @@ export interface Card {
   bodyText?: string;
   flavorText?: string;
   classifications?: string;
+  characterName?: string;
+  franchise?: string;
   imageUrl: string;
   dateAdded?: string;
   dateModified?: string;

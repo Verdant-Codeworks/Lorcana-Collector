@@ -33,18 +33,20 @@ export function CardTile({ card, onToggleOwnership, onOpenDetail }: CardTileProp
       onClick={handleClick}
       onContextMenu={handleContextMenu}
     >
-      {!imageLoaded && (
-        <div className="aspect-[3/4] w-full animate-pulse rounded-lg bg-secondary" />
-      )}
-      <img
-        src={card.imageUrl}
-        alt={card.name}
-        loading="lazy"
-        onLoad={() => setImageLoaded(true)}
-        className={`aspect-[3/4] w-full rounded-lg object-cover transition-all ${
-          !imageLoaded ? 'hidden' : ''
-        } ${!isOwned ? 'grayscale opacity-40' : ''}`}
-      />
+      <div className="relative aspect-[3/4] w-full">
+        {!imageLoaded && (
+          <div className="absolute inset-0 animate-pulse rounded-lg bg-secondary" />
+        )}
+        <img
+          src={card.imageUrl}
+          alt={card.name}
+          loading="lazy"
+          onLoad={() => setImageLoaded(true)}
+          className={`absolute inset-0 h-full w-full rounded-lg object-cover transition-all duration-300 ${
+            !imageLoaded ? 'opacity-0' : 'opacity-100'
+          } ${isOwned ? '' : 'grayscale opacity-40'}`}
+        />
+      </div>
 
       {isOwned && card.ownedCount > 1 && (
         <Badge className="absolute right-1 top-1 text-xs">

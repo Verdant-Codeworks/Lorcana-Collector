@@ -22,6 +22,8 @@ export class CardsController {
     @Query('types') types?: string,
     @Query('rarities') rarities?: string,
     @Query('classifications') classifications?: string,
+    @Query('characterNames') characterNames?: string,
+    @Query('franchises') franchises?: string,
     @Query('search') search?: string,
     @Query('page') page?: string,
     @Query('pageSize') pageSize?: string,
@@ -33,6 +35,8 @@ export class CardsController {
       types: types ? types.split(',') : undefined,
       rarities: rarities ? rarities.split(',') : undefined,
       classifications: classifications ? classifications.split(',') : undefined,
+      characterNames: characterNames ? characterNames.split(',') : undefined,
+      franchises: franchises ? franchises.split(',') : undefined,
       search,
       page: page ? parseInt(page, 10) : undefined,
       pageSize: pageSize ? parseInt(pageSize, 10) : undefined,
@@ -49,6 +53,14 @@ export class CardsController {
   @Get('filters')
   async findFilters() {
     return this.cardsService.findFilters();
+  }
+
+  @Get('characters')
+  async findCharacters(
+    @Query('search') search?: string,
+    @Query('franchise') franchise?: string,
+  ) {
+    return this.cardsService.findCharacters(search, franchise);
   }
 
   @Get(':uniqueId')

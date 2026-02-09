@@ -58,6 +58,14 @@ export class CardEntity {
   @Property({ nullable: true })
   classifications?: string;
 
+  @Property({ nullable: true })
+  @Index()
+  characterName?: string;
+
+  @Property({ nullable: true })
+  @Index()
+  franchise?: string;
+
   @Property({ length: 512 })
   imageUrl!: string;
 

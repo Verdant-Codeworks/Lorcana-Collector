@@ -1,6 +1,7 @@
 import { useSets, useCardFilters, useCards } from '@/hooks/useCards';
 import { Badge } from '@/components/ui/badge';
 import { Loader2 } from 'lucide-react';
+import { CharacterPicker } from './CharacterPicker';
 import type { CollectionFilters } from '@lorcana/shared';
 
 interface FilterBuilderProps {
@@ -55,6 +56,8 @@ export function FilterBuilder({ filters, onChange }: FilterBuilderProps) {
     types: filters.types,
     rarities: filters.rarities,
     classifications: filters.classifications,
+    characterNames: filters.characterNames,
+    franchises: filters.franchises,
     pageSize: 1,
   });
 
@@ -68,6 +71,20 @@ export function FilterBuilder({ filters, onChange }: FilterBuilderProps) {
 
   return (
     <div className="space-y-4">
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Characters & Franchises</label>
+        <CharacterPicker
+          selectedCharacters={filters.characterNames || []}
+          selectedFranchises={filters.franchises || []}
+          onCharactersChange={(characterNames) =>
+            onChange({ ...filters, characterNames: characterNames.length ? characterNames : undefined })
+          }
+          onFranchisesChange={(franchises) =>
+            onChange({ ...filters, franchises: franchises.length ? franchises : undefined })
+          }
+        />
+      </div>
+
       <MultiSelect
         label="Sets"
         options={sets.map((s) => s.setId)}

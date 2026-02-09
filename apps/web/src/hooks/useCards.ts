@@ -30,3 +30,10 @@ export function useCardFilters() {
     queryFn: () => cardsApi.getFilters(),
   });
 }
+
+export function useCharacters(search?: string, franchise?: string) {
+  return useQuery({
+    queryKey: ['characters', search, franchise],
+    queryFn: () => cardsApi.getCharacters(search, franchise),
+  });
+}

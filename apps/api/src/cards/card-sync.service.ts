@@ -26,6 +26,7 @@ interface LorcanaApiCard {
   Flavor_Text?: string;
   Classifications?: string;
   Image: string;
+  Franchise?: string;
   Date_Added?: string;
   Date_Modified?: string;
 }
@@ -56,6 +57,12 @@ export class CardSyncService implements OnApplicationBootstrap {
     if (count === 0) {
       this.logger.log('No cards in DB, running initial sync...');
       await this.syncCards();
+      return;
+    }
+    const hasCharacterNames = await em.count(CardEntity, { characterName: { $ne: null } });
+    if (hasCharacterNames === 0) {
+      this.logger.log('Cards missing character names, running sync to backfill...');
+      await this.syncCards();
     }
   }
 
@@ -82,19 +89,24 @@ export class CardSyncService implements OnApplicationBootstrap {
         existing.name = apiSet.Name;
         existing.setNum = apiSet.Set_Num;
         existing.releaseDate = apiSet.Release_Date;
-        existing.cardCount = apiSet.Card_Count;
+        existing.cardCount = apiSet.Card_Count ?? 0;
       } else {
         const set = em.create(SetEntity, {
           setId: apiSet.Set_ID,
           name: apiSet.Name,
           setNum: apiSet.Set_Num,
           releaseDate: apiSet.Release_Date,
-          cardCount: apiSet.Card_Count,
+          cardCount: apiSet.Card_Count ?? 0,
         });
         em.persist(set);
       }
     }
     await em.flush();
+  }
+
+  private parseCharacterName(name: string): string | undefined {
+    const dashIndex = name.indexOf(' - ');
+    return dashIndex >= 0 ? name.substring(0, dashIndex) : undefined;
   }
 
   private async syncAllCards(em: SqlEntityManager) {
@@ -126,6 +138,8 @@ export class CardSyncService implements OnApplicationBootstrap {
           existing.bodyText = apiCard.Body_Text;
           existing.flavorText = apiCard.Flavor_Text;
           existing.classifications = apiCard.Classifications;
+          existing.characterName = this.parseCharacterName(apiCard.Name);
+          existing.franchise = apiCard.Franchise;
           existing.imageUrl = apiCard.Image;
           existing.dateAdded = apiCard.Date_Added;
           existing.dateModified = apiCard.Date_Modified;
@@ -149,6 +163,8 @@ export class CardSyncService implements OnApplicationBootstrap {
             bodyText: apiCard.Body_Text,
             flavorText: apiCard.Flavor_Text,
             classifications: apiCard.Classifications,
+            characterName: this.parseCharacterName(apiCard.Name),
+            franchise: apiCard.Franchise,
             imageUrl: apiCard.Image,
             dateAdded: apiCard.Date_Added,
             dateModified: apiCard.Date_Modified,

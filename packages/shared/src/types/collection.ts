@@ -4,6 +4,8 @@ export interface CollectionFilters {
   types?: string[];
   rarities?: string[];
   classifications?: string[];
+  characterNames?: string[];
+  franchises?: string[];
 }
 
 export interface Collection {
@@ -39,6 +41,8 @@ export interface CollectionCardEntry {
   bodyText?: string;
   flavorText?: string;
   classifications?: string;
+  characterName?: string;
+  franchise?: string;
   imageUrl: string;
   ownedCount: number;
 }

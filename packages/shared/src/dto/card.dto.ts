@@ -4,6 +4,8 @@ export interface CardQueryDto {
   types?: string[];
   rarities?: string[];
   classifications?: string[];
+  characterNames?: string[];
+  franchises?: string[];
   search?: string;
   page?: number;
   pageSize?: number;
@@ -15,4 +17,18 @@ export interface CardFiltersResponse {
   types: string[];
   rarities: string[];
   classifications: string[];
+  characterNames: string[];
+  franchises: string[];
+}
+
+export interface CharacterInfo {
+  name: string;
+  franchise?: string;
+  cardCount: number;
+  imageUrl: string;
+}
+
+export interface CharacterDiscoveryResponse {
+  characters: CharacterInfo[];
+  franchises: { name: string; characterCount: number }[];
 }

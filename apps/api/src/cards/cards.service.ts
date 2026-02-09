@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EntityManager, FilterQuery } from '@mikro-orm/postgresql';
 import { CardEntity } from './card.entity';
 import { SetEntity } from './set.entity';
-import type { CardQueryDto, PaginatedResponse, Card, CardFiltersResponse, SetInfo } from '@lorcana/shared';
+import type { CardQueryDto, PaginatedResponse, Card, CardFiltersResponse, SetInfo, CharacterDiscoveryResponse } from '@lorcana/shared';
 
 @Injectable()
 export class CardsService {
@@ -27,6 +27,16 @@ export class CardsService {
     }
     if (query.classifications?.length) {
       where.classifications = { $re: query.classifications.join('|') };
+    }
+    if (query.characterNames?.length && query.franchises?.length) {
+      where.$or = [
+        { characterName: { $in: query.characterNames } },
+        { franchise: { $in: query.franchises } },
+      ];
+    } else if (query.characterNames?.length) {
+      where.characterName = { $in: query.characterNames };
+    } else if (query.franchises?.length) {
+      where.franchise = { $in: query.franchises };
     }
     if (query.search) {
       where.name = { $ilike: `%${query.search}%` };
@@ -75,7 +85,7 @@ export class CardsService {
   async findFilters(): Promise<CardFiltersResponse> {
     const knex = this.em.getKnex();
 
-    const [colors, types, rarities, classifications] = await Promise.all([
+    const [colors, types, rarities, classifications, characterNames, franchises] = await Promise.all([
       knex('cards').distinct('color').orderBy('color').then((r) => r.map((row) => row.color)),
       knex('cards').distinct('type').orderBy('type').then((r) => r.map((row) => row.type)),
       knex('cards').distinct('rarity').orderBy('rarity').then((r) => r.map((row) => row.rarity)),
@@ -92,9 +102,60 @@ export class CardsService {
           });
           return Array.from(all).sort();
         }),
+      knex('cards').distinct('character_name')
+        .whereNotNull('character_name')
+        .orderBy('character_name')
+        .then((r) => r.map((row) => row.character_name as string)),
+      knex('cards').distinct('franchise')
+        .whereNotNull('franchise')
+        .orderBy('franchise')
+        .then((r) => r.map((row) => row.franchise as string)),
     ]);
 
-    return { colors, types, rarities, classifications };
+    return { colors, types, rarities, classifications, characterNames, franchises };
+  }
+
+  async findCharacters(search?: string, franchise?: string): Promise<CharacterDiscoveryResponse> {
+    const knex = this.em.getKnex();
+
+    let charQuery = knex('cards')
+      .select('character_name', 'franchise')
+      .count('* as card_count')
+      .min('image_url as image_url')
+      .whereNotNull('character_name')
+      .groupBy('character_name', 'franchise')
+      .orderBy('character_name');
+
+    if (search) {
+      charQuery = charQuery.whereRaw('character_name ILIKE ?', [`%${search}%`]);
+    }
+    if (franchise) {
+      charQuery = charQuery.where('franchise', franchise);
+    }
+
+    const charRows = await charQuery;
+
+    const characters = charRows.map((row: any) => ({
+      name: row.character_name as string,
+      franchise: (row.franchise as string) || undefined,
+      cardCount: parseInt(row.card_count, 10),
+      imageUrl: row.image_url as string,
+    }));
+
+    const franchiseRows = await knex('cards')
+      .select('franchise')
+      .countDistinct('character_name as character_count')
+      .whereNotNull('franchise')
+      .whereNotNull('character_name')
+      .groupBy('franchise')
+      .orderBy('franchise');
+
+    const franchises = franchiseRows.map((row: any) => ({
+      name: row.franchise as string,
+      characterCount: parseInt(row.character_count, 10),
+    }));
+
+    return { characters, franchises };
   }
 
   buildFilterQuery(filters: {
@@ -103,6 +164,8 @@ export class CardsService {
     types?: string[];
     rarities?: string[];
     classifications?: string[];
+    characterNames?: string[];
+    franchises?: string[];
   }): FilterQuery<CardEntity> {
     const where: FilterQuery<CardEntity> = {};
     if (filters.sets?.length) {
@@ -119,6 +182,16 @@ export class CardsService {
     }
     if (filters.classifications?.length) {
       where.classifications = { $re: filters.classifications.join('|') };
+    }
+    if (filters.characterNames?.length && filters.franchises?.length) {
+      where.$or = [
+        { characterName: { $in: filters.characterNames } },
+        { franchise: { $in: filters.franchises } },
+      ];
+    } else if (filters.characterNames?.length) {
+      where.characterName = { $in: filters.characterNames };
+    } else if (filters.franchises?.length) {
+      where.franchise = { $in: filters.franchises };
     }
     return where;
   }
@@ -142,6 +215,8 @@ export class CardsService {
       bodyText: card.bodyText,
       flavorText: card.flavorText,
       classifications: card.classifications,
+      characterName: card.characterName,
+      franchise: card.franchise,
       imageUrl: card.imageUrl,
       dateAdded: card.dateAdded,
       dateModified: card.dateModified,

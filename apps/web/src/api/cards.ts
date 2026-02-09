@@ -1,5 +1,5 @@
 import { api } from './client';
-import type { Card, SetInfo, PaginatedResponse, CardFiltersResponse, CardQueryDto } from '@lorcana/shared';
+import type { Card, SetInfo, PaginatedResponse, CardFiltersResponse, CardQueryDto, CharacterDiscoveryResponse } from '@lorcana/shared';
 
 export const cardsApi = {
   list: (query: CardQueryDto = {}) => {
@@ -9,6 +9,8 @@ export const cardsApi = {
     if (query.types?.length) params.set('types', query.types.join(','));
     if (query.rarities?.length) params.set('rarities', query.rarities.join(','));
     if (query.classifications?.length) params.set('classifications', query.classifications.join(','));
+    if (query.characterNames?.length) params.set('characterNames', query.characterNames.join(','));
+    if (query.franchises?.length) params.set('franchises', query.franchises.join(','));
     if (query.search) params.set('search', query.search);
     if (query.page) params.set('page', String(query.page));
     if (query.pageSize) params.set('pageSize', String(query.pageSize));
@@ -24,4 +26,11 @@ export const cardsApi = {
 
   getFilters: () =>
     api.get<CardFiltersResponse>('/cards/filters').then((r) => r.data),
+
+  getCharacters: (search?: string, franchise?: string) => {
+    const params = new URLSearchParams();
+    if (search) params.set('search', search);
+    if (franchise) params.set('franchise', franchise);
+    return api.get<CharacterDiscoveryResponse>(`/cards/characters?${params}`).then((r) => r.data);
+  },
 };

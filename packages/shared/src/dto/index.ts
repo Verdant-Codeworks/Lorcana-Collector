@@ -1,5 +1,5 @@
 export type { RegisterDto, LoginDto } from './auth.dto.js';
-export type { CardQueryDto, CardFiltersResponse } from './card.dto.js';
+export type { CardQueryDto, CardFiltersResponse, CharacterInfo, CharacterDiscoveryResponse } from './card.dto.js';
 export type {
   CreateCollectionDto,
   UpdateCollectionDto,
