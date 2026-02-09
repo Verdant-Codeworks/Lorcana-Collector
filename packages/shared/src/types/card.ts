@@ -4,7 +4,7 @@ export interface Card {
   artist: string;
   setId: string;
   setName: string;
-  cardNum: number;
+  cardNum: string;
   color: string;
   type: string;
   rarity: string;
@@ -19,6 +19,13 @@ export interface Card {
   characterName?: string;
   franchise?: string;
   imageUrl: string;
+  version?: string;
+  layout?: string;
+  moveCost?: number;
+  legality?: string;
+  priceUsd?: string;
+  priceUsdFoil?: string;
+  tcgplayerId?: number;
   dateAdded?: string;
   dateModified?: string;
   syncedAt: string;

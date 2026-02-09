@@ -20,7 +20,7 @@ export class CardEntity {
   setName!: string;
 
   @Property()
-  cardNum!: number;
+  cardNum!: string;
 
   @Property()
   @Index()
@@ -68,6 +68,27 @@ export class CardEntity {
 
   @Property({ length: 512 })
   imageUrl!: string;
+
+  @Property({ nullable: true })
+  version?: string;
+
+  @Property({ nullable: true })
+  layout?: string;
+
+  @Property({ nullable: true })
+  moveCost?: number;
+
+  @Property({ nullable: true })
+  legality?: string;
+
+  @Property({ nullable: true })
+  priceUsd?: string;
+
+  @Property({ nullable: true })
+  priceUsdFoil?: string;
+
+  @Property({ nullable: true })
+  tcgplayerId?: number;
 
   @Property({ nullable: true })
   dateAdded?: string;
