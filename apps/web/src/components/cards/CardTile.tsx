@@ -1,0 +1,56 @@
+import { useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import type { CollectionCardEntry } from '@lorcana/shared';
+
+interface CardTileProps {
+  card: CollectionCardEntry;
+  onToggleOwnership: (cardId: string, newCount: number) => void;
+  onOpenDetail: (card: CollectionCardEntry) => void;
+}
+
+export function CardTile({ card, onToggleOwnership, onOpenDetail }: CardTileProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const isOwned = card.ownedCount > 0;
+
+  const handleClick = () => {
+    if (!isOwned) {
+      onToggleOwnership(card.uniqueId, 1);
+    } else {
+      onOpenDetail(card);
+    }
+  };
+
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isOwned) {
+      onToggleOwnership(card.uniqueId, card.ownedCount - 1);
+    }
+  };
+
+  return (
+    <div
+      className="group relative cursor-pointer overflow-hidden rounded-lg transition-transform hover:scale-105"
+      onClick={handleClick}
+      onContextMenu={handleContextMenu}
+    >
+      {!imageLoaded && (
+        <div className="aspect-[3/4] w-full animate-pulse rounded-lg bg-secondary" />
+      )}
+      <img
+        src={card.imageUrl}
+        alt={card.name}
+        loading="lazy"
+        onLoad={() => setImageLoaded(true)}
+        className={`aspect-[3/4] w-full rounded-lg object-cover transition-all ${
+          !imageLoaded ? 'hidden' : ''
+        } ${!isOwned ? 'grayscale opacity-40' : ''}`}
+      />
+
+      {isOwned && card.ownedCount > 1 && (
+        <Badge className="absolute right-1 top-1 text-xs">
+          x{card.ownedCount}
+        </Badge>
+      )}
+    </div>
+  );
+}

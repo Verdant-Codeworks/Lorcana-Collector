@@ -1,0 +1,63 @@
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'sonner';
+import { useAuthStore } from '@/stores/auth.store';
+import { ProtectedRoute } from '@/routes/ProtectedRoute';
+import { AppShell } from '@/components/layout/AppShell';
+import { LoginPage } from '@/pages/LoginPage';
+import { RegisterPage } from '@/pages/RegisterPage';
+import { OAuthCallbackPage } from '@/pages/OAuthCallbackPage';
+import { DashboardPage } from '@/pages/DashboardPage';
+import { CollectionCreatePage } from '@/pages/CollectionCreatePage';
+import { CollectionPage } from '@/pages/CollectionPage';
+import { BrowseCardsPage } from '@/pages/BrowseCardsPage';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 30_000,
+      retry: 1,
+    },
+  },
+});
+
+function AppRoutes() {
+  const loadUser = useAuthStore((s) => s.loadUser);
+
+  useEffect(() => {
+    loadUser();
+  }, [loadUser]);
+
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/auth/callback" element={<OAuthCallbackPage />} />
+      <Route
+        element={
+          <ProtectedRoute>
+            <AppShell />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/collections/new" element={<CollectionCreatePage />} />
+        <Route path="/collections/:id" element={<CollectionPage />} />
+        <Route path="/browse" element={<BrowseCardsPage />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
+  );
+}
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AppRoutes />
+        <Toaster position="bottom-right" />
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+}
