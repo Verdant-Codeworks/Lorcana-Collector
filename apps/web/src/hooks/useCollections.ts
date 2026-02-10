@@ -79,7 +79,7 @@ export function useSetCardOwnership(collectionId: string) {
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['collection', collectionId] });
+      queryClient.invalidateQueries({ queryKey: ['collection'] });
       queryClient.invalidateQueries({ queryKey: ['collections'] });
     },
   });

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { CollectionEntity } from './collection.entity';
-import { CollectionCardEntity } from './collection-card.entity';
+import { UserCardEntity } from './user-card.entity';
 import { CardEntity } from '../cards/card.entity';
 import { CardsService } from '../cards/cards.service';
 import { UserEntity } from '../users/user.entity';
@@ -22,10 +22,15 @@ export class CollectionsService {
 
   async findAllForUser(user: UserEntity): Promise<CollectionWithStats[]> {
     const collections = await this.em.find(CollectionEntity, { user });
+
+    // Pre-load all owned card IDs for this user once
+    const userCards = await this.em.find(UserCardEntity, { user }, { populate: ['card'] });
+    const ownedCardIds = new Set(userCards.map((uc) => uc.card.uniqueId));
+
     const results: CollectionWithStats[] = [];
 
     for (const col of collections) {
-      const stats = await this.getCollectionStats(col);
+      const stats = await this.getCollectionStatsWithOwned(col, ownedCardIds);
       results.push({
         id: col.id,
         name: col.name,
@@ -76,10 +81,9 @@ export class CollectionsService {
     });
 
     const ownedMap = new Map<string, number>();
-    const ownedRecords = await this.em.find(CollectionCardEntity, { collection });
-    for (const cc of ownedRecords) {
-      await this.em.populate(cc, ['card']);
-      ownedMap.set(cc.card.uniqueId, cc.count);
+    const ownedRecords = await this.em.find(UserCardEntity, { user }, { populate: ['card'] });
+    for (const uc of ownedRecords) {
+      ownedMap.set(uc.card.uniqueId, uc.count);
     }
 
     const cards: CollectionCardEntry[] = matchingCards.map((c) => ({
@@ -127,7 +131,6 @@ export class CollectionsService {
 
   async remove(collectionId: string, user: UserEntity): Promise<void> {
     const collection = await this.findOwnedCollection(collectionId, user);
-    await this.em.nativeDelete(CollectionCardEntity, { collection });
     await this.em.removeAndFlush(collection);
   }
 
@@ -137,21 +140,21 @@ export class CollectionsService {
     user: UserEntity,
     count: number,
   ): Promise<void> {
-    const collection = await this.findOwnedCollection(collectionId, user);
+    await this.findOwnedCollection(collectionId, user);
     const card = await this.em.findOne(CardEntity, { uniqueId: cardId });
     if (!card) throw new NotFoundException('Card not found');
 
-    let cc = await this.em.findOne(CollectionCardEntity, { collection, card });
+    let uc = await this.em.findOne(UserCardEntity, { user, card });
     if (count <= 0) {
-      if (cc) await this.em.removeAndFlush(cc);
+      if (uc) await this.em.removeAndFlush(uc);
       return;
     }
 
-    if (cc) {
-      cc.count = count;
+    if (uc) {
+      uc.count = count;
     } else {
-      cc = this.em.create(CollectionCardEntity, { collection, card, count });
-      this.em.persist(cc);
+      uc = this.em.create(UserCardEntity, { user, card, count });
+      this.em.persist(uc);
     }
     await this.em.flush();
   }
@@ -168,9 +171,36 @@ export class CollectionsService {
   }
 
   private async getCollectionStats(collection: CollectionEntity) {
+    await this.em.populate(collection, ['user']);
     const where = this.cardsService.buildFilterQuery(collection.filters);
-    const totalCards = await this.em.count(CardEntity, where);
-    const ownedCards = await this.em.count(CollectionCardEntity, { collection });
+    const matchingCards = await this.em.find(CardEntity, where, { fields: ['uniqueId'] });
+    const totalCards = matchingCards.length;
+    const matchingIds = matchingCards.map((c) => c.uniqueId);
+
+    let ownedCards = 0;
+    if (matchingIds.length > 0) {
+      ownedCards = await this.em.count(UserCardEntity, {
+        user: collection.user,
+        card: { uniqueId: { $in: matchingIds } },
+      });
+    }
+
+    return {
+      totalCards,
+      ownedCards,
+      completionPercent: totalCards > 0 ? Math.round((ownedCards / totalCards) * 100) : 0,
+    };
+  }
+
+  private async getCollectionStatsWithOwned(
+    collection: CollectionEntity,
+    ownedCardIds: Set<string>,
+  ) {
+    const where = this.cardsService.buildFilterQuery(collection.filters);
+    const matchingCards = await this.em.find(CardEntity, where, { fields: ['uniqueId'] });
+    const totalCards = matchingCards.length;
+    const ownedCards = matchingCards.filter((c) => ownedCardIds.has(c.uniqueId)).length;
+
     return {
       totalCards,
       ownedCards,

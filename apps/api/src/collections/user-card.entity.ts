@@ -1,16 +1,16 @@
 import { Entity, PrimaryKey, Property, ManyToOne, Unique } from '@mikro-orm/core';
 import { v4 } from 'uuid';
-import { CollectionEntity } from './collection.entity';
+import { UserEntity } from '../users/user.entity';
 import { CardEntity } from '../cards/card.entity';
 
-@Entity({ tableName: 'collection_cards' })
-@Unique({ properties: ['collection', 'card'] })
-export class CollectionCardEntity {
+@Entity({ tableName: 'user_cards' })
+@Unique({ properties: ['user', 'card'] })
+export class UserCardEntity {
   @PrimaryKey({ type: 'uuid' })
   id: string = v4();
 
-  @ManyToOne(() => CollectionEntity)
-  collection!: CollectionEntity;
+  @ManyToOne(() => UserEntity)
+  user!: UserEntity;
 
   @ManyToOne(() => CardEntity)
   card!: CardEntity;
