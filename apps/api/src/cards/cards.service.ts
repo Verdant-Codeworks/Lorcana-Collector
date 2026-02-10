@@ -86,9 +86,18 @@ export class CardsService {
     const knex = this.em.getKnex();
 
     const [colors, types, rarities, classifications, characterNames, franchises] = await Promise.all([
-      knex('cards').distinct('color').orderBy('color').then((r) => r.map((row) => row.color)),
+      knex('cards').distinct('color').where('color', '!=', '').orderBy('color').then((r) => r.map((row) => row.color)),
       knex('cards').distinct('type').orderBy('type').then((r) => r.map((row) => row.type)),
-      knex('cards').distinct('rarity').orderBy('rarity').then((r) => r.map((row) => row.rarity)),
+      knex('cards').distinct('rarity').then((r) => {
+        const rarityOrder = ['Common', 'Uncommon', 'Rare', 'Super Rare', 'Legendary', 'Enchanted', 'Promo'];
+        return r
+          .map((row) => row.rarity as string)
+          .sort((a, b) => {
+            const ai = rarityOrder.indexOf(a);
+            const bi = rarityOrder.indexOf(b);
+            return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+          });
+      }),
       knex('cards').distinct('classifications')
         .whereNotNull('classifications')
         .where('classifications', '!=', '')

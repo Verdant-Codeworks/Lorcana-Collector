@@ -9,6 +9,8 @@ interface FilterBuilderProps {
   onChange: (filters: CollectionFilters) => void;
 }
 
+type SelectOption = string | { label: string; value: string };
+
 function MultiSelect({
   label,
   options,
@@ -16,10 +18,13 @@ function MultiSelect({
   onChange,
 }: {
   label: string;
-  options: string[];
+  options: SelectOption[];
   selected: string[];
   onChange: (selected: string[]) => void;
 }) {
+  const getValue = (opt: SelectOption) => (typeof opt === 'string' ? opt : opt.value);
+  const getLabel = (opt: SelectOption) => (typeof opt === 'string' ? opt : opt.label);
+
   const toggle = (value: string) => {
     if (selected.includes(value)) {
       onChange(selected.filter((v) => v !== value));
@@ -34,12 +39,12 @@ function MultiSelect({
       <div className="flex flex-wrap gap-1.5">
         {options.map((opt) => (
           <Badge
-            key={opt}
-            variant={selected.includes(opt) ? 'default' : 'outline'}
+            key={getValue(opt)}
+            variant={selected.includes(getValue(opt)) ? 'default' : 'outline'}
             className="cursor-pointer"
-            onClick={() => toggle(opt)}
+            onClick={() => toggle(getValue(opt))}
           >
-            {opt}
+            {getLabel(opt)}
           </Badge>
         ))}
       </div>
@@ -87,7 +92,7 @@ export function FilterBuilder({ filters, onChange }: FilterBuilderProps) {
 
       <MultiSelect
         label="Sets"
-        options={sets.map((s) => s.setId)}
+        options={sets.map((s) => ({ label: s.name, value: s.setId }))}
         selected={filters.sets || []}
         onChange={(sets) => onChange({ ...filters, sets: sets.length ? sets : undefined })}
       />
