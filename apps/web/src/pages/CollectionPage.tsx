@@ -17,7 +17,7 @@ export function CollectionPage() {
   if (isLoading || !data) {
     return (
       <div className="flex justify-center py-12">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <Loader2 className="h-6 w-6 animate-spin text-magic" />
       </div>
     );
   }
@@ -37,7 +37,7 @@ export function CollectionPage() {
     <div className="space-y-6">
       <div className="flex items-center gap-4">
         <Link to="/dashboard">
-          <Button variant="ghost" size="icon">
+          <Button variant="outline" size="icon" className="border-magic/20">
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </Link>
@@ -49,12 +49,12 @@ export function CollectionPage() {
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="rounded-lg border border-magic/15 bg-card p-4 space-y-2">
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">
             {data.ownedCards} / {data.totalCards} cards collected
           </span>
-          <span className="font-medium">{data.completionPercent}%</span>
+          <span className="font-medium text-enchant">{data.completionPercent}%</span>
         </div>
         <Progress value={data.completionPercent} />
       </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 import type { CollectionCardEntry } from '@lorcana/shared';
 
 interface CardTileProps {
@@ -29,7 +30,10 @@ export function CardTile({ card, onToggleOwnership, onOpenDetail }: CardTileProp
 
   return (
     <div
-      className="group relative cursor-pointer overflow-hidden rounded-lg transition-transform hover:scale-105"
+      className={cn(
+        'group relative cursor-pointer overflow-hidden rounded-lg transition-all hover:scale-105',
+        isOwned && 'hover:shadow-[var(--shadow-glow-purple)]',
+      )}
       onClick={handleClick}
       onContextMenu={handleContextMenu}
     >
@@ -42,9 +46,11 @@ export function CardTile({ card, onToggleOwnership, onOpenDetail }: CardTileProp
           alt={card.name}
           loading="lazy"
           onLoad={() => setImageLoaded(true)}
-          className={`absolute inset-0 h-full w-full rounded-lg object-cover transition-all duration-300 ${
-            !imageLoaded ? 'opacity-0' : 'opacity-100'
-          } ${isOwned ? '' : 'grayscale opacity-40'}`}
+          className={cn(
+            'absolute inset-0 h-full w-full rounded-lg object-cover transition-all duration-300',
+            !imageLoaded ? 'opacity-0' : 'opacity-100',
+            !isOwned && 'grayscale opacity-40',
+          )}
         />
       </div>
 

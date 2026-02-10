@@ -133,10 +133,10 @@ export function CharacterPicker({
       </div>
 
       {/* Results */}
-      <div className="max-h-96 overflow-y-auto rounded-md border bg-card">
+      <div className="max-h-64 overflow-y-auto rounded-md border border-magic/15 bg-card">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            <Loader2 className="h-6 w-6 animate-spin text-magic" />
           </div>
         ) : debouncedSearch ? (
           // Search results - flat list

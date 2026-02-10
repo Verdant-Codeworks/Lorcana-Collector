@@ -1,23 +1,66 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0a0a0f;
-  --color-foreground: #e4e4e7;
-  --color-card: #18181b;
-  --color-card-foreground: #e4e4e7;
-  --color-primary: #6d28d9;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #27272a;
-  --color-secondary-foreground: #e4e4e7;
-  --color-muted: #27272a;
-  --color-muted-foreground: #a1a1aa;
-  --color-accent: #6d28d9;
-  --color-accent-foreground: #ffffff;
-  --color-destructive: #dc2626;
-  --color-border: #3f3f46;
-  --color-input: #3f3f46;
-  --color-ring: #6d28d9;
+  /* Deep cosmic indigo base — inspired by the Lorcana card back inkwell */
+  --color-background: #0c0a1d;
+  --color-foreground: #e4e0f0;
+  --color-card: #141030;
+  --color-card-foreground: #e4e0f0;
+  --color-primary: #d4a843;
+  --color-primary-foreground: #0c0a1d;
+  --color-secondary: #1a1540;
+  --color-secondary-foreground: #e4e0f0;
+  --color-muted: #1a1540;
+  --color-muted-foreground: #9b93b8;
+  --color-accent: #2dd4bf;
+  --color-accent-foreground: #0c0a1d;
+  --color-destructive: #ef4444;
+  --color-border: #2a2355;
+  --color-input: #2a2355;
+  --color-ring: #d4a843;
   --radius: 0.5rem;
+
+  /* Magic colors for gradients & decorative use */
+  --color-magic: #7c3aed;
+  --color-enchant: #2dd4bf;
+
+  /* Lorcana ink colors */
+  --color-ink-amber: #f59e0b;
+  --color-ink-amethyst: #8b5cf6;
+  --color-ink-emerald: #10b981;
+  --color-ink-ruby: #ef4444;
+  --color-ink-sapphire: #3b82f6;
+  --color-ink-steel: #94a3b8;
+
+  /* Glow shadows — gold, purple, and teal variants */
+  --shadow-glow-sm: 0 0 8px rgba(212, 168, 67, 0.3);
+  --shadow-glow-md: 0 0 16px rgba(212, 168, 67, 0.4);
+  --shadow-glow-lg: 0 0 24px rgba(212, 168, 67, 0.5);
+  --shadow-glow-purple: 0 0 16px rgba(124, 58, 237, 0.4);
+  --shadow-glow-enchant: 0 0 12px rgba(45, 212, 191, 0.35);
+  --shadow-glow-mixed: 0 0 16px rgba(212, 168, 67, 0.3), 0 0 32px rgba(124, 58, 237, 0.2);
+
+  /* Accordion animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
 }
 
 body {

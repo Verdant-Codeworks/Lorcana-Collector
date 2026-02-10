@@ -11,11 +11,11 @@ function CollectionCard({ collection }: { collection: CollectionWithStats }) {
   return (
     <Link
       to={`/collections/${collection.id}`}
-      className="block rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/50"
+      className="group block rounded-lg border border-border bg-card p-4 transition-all hover:border-magic/40 hover:shadow-[var(--shadow-glow-purple)]"
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="font-semibold">{collection.name}</h3>
+          <h3 className="font-semibold group-hover:text-primary transition-colors">{collection.name}</h3>
           {collection.description && (
             <p className="mt-1 text-sm text-muted-foreground">{collection.description}</p>
           )}
@@ -40,7 +40,7 @@ function CollectionCard({ collection }: { collection: CollectionWithStats }) {
           <span className="text-muted-foreground">
             {collection.ownedCards} / {collection.totalCards} cards
           </span>
-          <span className="font-medium">{collection.completionPercent}%</span>
+          <span className="font-medium text-enchant">{collection.completionPercent}%</span>
         </div>
         <Progress value={collection.completionPercent} />
       </div>
@@ -54,7 +54,7 @@ export function DashboardPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <Loader2 className="h-6 w-6 animate-spin text-magic" />
       </div>
     );
   }
@@ -64,7 +64,7 @@ export function DashboardPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">My Collections</h1>
         <Link to="/collections/new">
-          <Button>
+          <Button variant="enchanted">
             <Plus className="h-4 w-4" />
             New Collection
           </Button>
@@ -72,7 +72,7 @@ export function DashboardPage() {
       </div>
 
       {!collections?.length ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center">
+        <div className="rounded-lg border border-dashed border-magic/30 bg-card/50 py-12 text-center">
           <p className="text-muted-foreground">No collections yet</p>
           <Link to="/collections/new">
             <Button variant="outline" className="mt-4">

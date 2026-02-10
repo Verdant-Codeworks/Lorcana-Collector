@@ -56,7 +56,16 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AppRoutes />
-        <Toaster position="bottom-right" />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: '#141030',
+              color: '#e4e0f0',
+              border: '1px solid #2a2355',
+            },
+          }}
+        />
       </BrowserRouter>
     </QueryClientProvider>
   );

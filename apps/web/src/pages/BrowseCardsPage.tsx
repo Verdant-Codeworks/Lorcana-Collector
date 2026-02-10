@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useCards, useSets, useCardFilters } from '@/hooks/useCards';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { InkBadge } from '@/components/ui/ink-badge';
 import { Button } from '@/components/ui/button';
 import { Loader2, Search } from 'lucide-react';
 import type { CardQueryDto } from '@lorcana/shared';
@@ -61,14 +62,12 @@ export function BrowseCardsPage() {
         {filters && (
           <div className="flex flex-wrap gap-1.5">
             {filters.colors.map((c) => (
-              <Badge
+              <InkBadge
                 key={c}
-                variant={query.colors?.includes(c) ? 'default' : 'outline'}
-                className="cursor-pointer"
+                color={c}
+                selected={query.colors?.includes(c) || false}
                 onClick={() => toggleFilter('colors', c)}
-              >
-                {c}
-              </Badge>
+              />
             ))}
           </div>
         )}
@@ -76,7 +75,7 @@ export function BrowseCardsPage() {
 
       {isLoading ? (
         <div className="flex justify-center py-12">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          <Loader2 className="h-6 w-6 animate-spin text-magic" />
         </div>
       ) : data ? (
         <>
@@ -86,7 +85,7 @@ export function BrowseCardsPage() {
             style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))' }}
           >
             {data.data.map((card) => (
-              <div key={card.uniqueId} className="overflow-hidden rounded-lg">
+              <div key={card.uniqueId} className="overflow-hidden rounded-lg transition-all hover:shadow-[var(--shadow-glow-purple)]">
                 <img
                   src={card.imageUrl}
                   alt={card.name}

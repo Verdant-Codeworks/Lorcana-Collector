@@ -5,6 +5,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { InkBadge } from '@/components/ui/ink-badge';
 import { Minus, Plus } from 'lucide-react';
 import type { CollectionCardEntry } from '@lorcana/shared';
 
@@ -35,7 +36,7 @@ export function CardDetailModal({ card, open, onClose, onChangeCount }: CardDeta
               <div className="text-muted-foreground">Set</div>
               <div>{card.setName}</div>
               <div className="text-muted-foreground">Color</div>
-              <div>{card.color}</div>
+              <div><InkBadge color={card.color} selected /></div>
               <div className="text-muted-foreground">Type</div>
               <div>{card.type}</div>
               <div className="text-muted-foreground">Rarity</div>
