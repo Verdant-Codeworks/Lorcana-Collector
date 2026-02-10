@@ -124,11 +124,6 @@ export class CardSyncService implements OnApplicationBootstrap {
     return sets;
   }
 
-  private parseCharacterName(name: string): string | undefined {
-    const dashIndex = name.indexOf(' - ');
-    return dashIndex >= 0 ? name.substring(0, dashIndex) : undefined;
-  }
-
   private delay(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
@@ -140,10 +135,10 @@ export class CardSyncService implements OnApplicationBootstrap {
     for (const apiSet of sets) {
       await this.delay(100);
 
-      const { data } = await axios.get<LorcastResponse<LorcastCard>>(
+      const { data } = await axios.get<LorcastCard[]>(
         `${this.apiUrl}/sets/${apiSet.code}/cards`,
       );
-      const cards = data.results;
+      const cards = data;
       this.logger.log(`Fetched ${cards.length} cards for set "${apiSet.name}" (${apiSet.code})`);
 
       const set = await em.findOneOrFail(SetEntity, { setId: apiSet.code });
@@ -151,7 +146,7 @@ export class CardSyncService implements OnApplicationBootstrap {
 
       for (const apiCard of cards) {
         const existing = await em.findOne(CardEntity, { uniqueId: apiCard.id });
-        const characterName = this.parseCharacterName(apiCard.name);
+        const characterName = apiCard.version ? apiCard.name : undefined;
         const franchise = characterName ? franchiseMap[characterName] : undefined;
 
         const cardData = {
