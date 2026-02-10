@@ -29,7 +29,7 @@ pnpm --filter @lorcana/web dev         # Run frontend dev server
 ## Architecture
 
 - `packages/shared` — Shared DTOs, enums (Color, CardType, Rarity, SetId), and TypeScript interfaces
-- `apps/api` — NestJS backend with MikroORM entities (Card, Set, User, Collection, CollectionCard), Passport auth, card sync cron from lorcana-api.com
+- `apps/api` — NestJS backend with MikroORM entities (Card, Set, User, Collection, CollectionCard), Passport auth, card sync cron from Lorcast API (lorcast.com)
 - `apps/web` — React SPA with Zustand auth store, TanStack Query for server state, React Router
 
 ## Database

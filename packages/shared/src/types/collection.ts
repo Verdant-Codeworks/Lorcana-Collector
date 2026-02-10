@@ -29,7 +29,7 @@ export interface CollectionCardEntry {
   artist: string;
   setId: string;
   setName: string;
-  cardNum: number;
+  cardNum: string;
   color: string;
   type: string;
   rarity: string;
