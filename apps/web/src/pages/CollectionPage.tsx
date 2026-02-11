@@ -5,7 +5,7 @@ import { CardGrid } from '@/components/cards/CardGrid';
 import { CardDetailModal } from '@/components/cards/CardDetailModal';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Pencil } from 'lucide-react';
 import type { CollectionCardEntry } from '@lorcana/shared';
 
 export function CollectionPage() {
@@ -47,6 +47,12 @@ export function CollectionPage() {
             <p className="text-sm text-muted-foreground">{data.collection.description}</p>
           )}
         </div>
+        <Link to={`/collections/${id}/edit`}>
+          <Button variant="outline" size="sm" className="border-magic/20">
+            <Pencil className="mr-1.5 h-3.5 w-3.5" />
+            Edit
+          </Button>
+        </Link>
       </div>
 
       <div className="rounded-lg border border-magic/15 bg-card p-4 space-y-2">

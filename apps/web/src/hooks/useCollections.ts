@@ -34,6 +34,7 @@ export function useUpdateCollection() {
       collectionsApi.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['collections'] });
+      queryClient.invalidateQueries({ queryKey: ['collection'] });
     },
   });
 }

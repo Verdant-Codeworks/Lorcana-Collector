@@ -11,6 +11,7 @@ import { OAuthCallbackPage } from '@/pages/OAuthCallbackPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { CollectionCreatePage } from '@/pages/CollectionCreatePage';
 import { CollectionPage } from '@/pages/CollectionPage';
+import { CollectionEditPage } from '@/pages/CollectionEditPage';
 import { BrowseCardsPage } from '@/pages/BrowseCardsPage';
 
 const queryClient = new QueryClient({
@@ -43,6 +44,7 @@ function AppRoutes() {
       >
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/collections/new" element={<CollectionCreatePage />} />
+        <Route path="/collections/:id/edit" element={<CollectionEditPage />} />
         <Route path="/collections/:id" element={<CollectionPage />} />
         <Route path="/browse" element={<BrowseCardsPage />} />
       </Route>
