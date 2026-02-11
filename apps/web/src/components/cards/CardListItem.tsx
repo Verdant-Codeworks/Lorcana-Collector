@@ -1,6 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import { InkBadge } from '@/components/ui/ink-badge';
-import { cn } from '@/lib/utils';
+import { cn, INK_ICONS } from '@/lib/utils';
 import type { CollectionCardEntry } from '@lorcana/shared';
 
 interface CardListItemProps {
@@ -46,10 +45,18 @@ export function CardListItem({ card, onToggleOwnership, onOpenDetail }: CardList
         )}
       />
       <span className="w-10 shrink-0 text-xs text-muted-foreground">#{card.cardNum}</span>
-      <span className="min-w-0 flex-1 truncate text-sm font-medium">{card.name}</span>
-      <InkBadge color={card.color} selected />
+      <span className="min-w-0 flex-1 truncate text-sm font-medium">{card.name}{card.version ? ` - ${card.version}` : ''}</span>
+      <span className="flex shrink-0 gap-0.5">
+        {card.color.split('/').map((ink) => {
+          const trimmed = ink.trim();
+          return INK_ICONS[trimmed] ? (
+            <img key={trimmed} src={INK_ICONS[trimmed]} alt={trimmed} className="h-6 w-6 object-contain" />
+          ) : (
+            <span key={trimmed} className="text-xs text-muted-foreground">{trimmed}</span>
+          );
+        })}
+      </span>
       <span className="hidden w-20 text-xs text-muted-foreground sm:block">{card.rarity}</span>
-      <span className="hidden w-8 text-center text-xs text-muted-foreground md:block">{card.cost}</span>
       {isOwned ? (
         <Badge className="w-10 justify-center text-xs">x{card.ownedCount}</Badge>
       ) : (

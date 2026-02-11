@@ -1,7 +1,7 @@
 import { useSets, useCardFilters } from '@/hooks/useCards';
 import { Badge } from '@/components/ui/badge';
-import { InkBadge } from '@/components/ui/ink-badge';
 import { Loader2 } from 'lucide-react';
+import { cn, INK_ICONS } from '@/lib/utils';
 import { CharacterPicker } from './CharacterPicker';
 import {
   Accordion,
@@ -72,15 +72,35 @@ function ColorSelect({
   };
 
   return (
-    <div className="flex flex-wrap gap-1.5">
-      {colors.map((color) => (
-        <InkBadge
-          key={color}
-          color={color}
-          selected={selected.includes(color)}
-          onClick={() => toggle(color)}
-        />
-      ))}
+    <div className="flex flex-wrap gap-2">
+      {colors.map((color) => {
+        const isSelected = selected.includes(color);
+        return INK_ICONS[color] ? (
+          <button
+            key={color}
+            type="button"
+            onClick={() => toggle(color)}
+            className={cn(
+              'flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs font-medium transition-all',
+              isSelected
+                ? 'border-primary bg-primary/10 text-primary'
+                : 'border-border bg-transparent text-muted-foreground opacity-50 hover:opacity-75',
+            )}
+          >
+            <img src={INK_ICONS[color]} alt={color} className="h-5 w-5 object-contain" />
+            {color}
+          </button>
+        ) : (
+          <Badge
+            key={color}
+            variant={isSelected ? 'default' : 'outline'}
+            className="cursor-pointer"
+            onClick={() => toggle(color)}
+          >
+            {color}
+          </Badge>
+        );
+      })}
     </div>
   );
 }

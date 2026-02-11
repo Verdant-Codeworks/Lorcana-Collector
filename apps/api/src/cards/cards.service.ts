@@ -17,7 +17,7 @@ export class CardsService {
       where.set = { setId: { $in: query.sets } };
     }
     if (query.colors?.length) {
-      where.color = { $in: query.colors };
+      where.color = { $re: query.colors.join('|') };
     }
     if (query.types?.length) {
       where.type = { $in: query.types };
@@ -86,7 +86,13 @@ export class CardsService {
     const knex = this.em.getKnex();
 
     const [colors, types, rarities, classifications, characterNames, franchises] = await Promise.all([
-      knex('cards').distinct('color').where('color', '!=', '').orderBy('color').then((r) => r.map((row) => row.color)),
+      knex('cards').distinct('color').where('color', '!=', '').orderBy('color').then((r) => {
+        const all = new Set<string>();
+        r.forEach((row) => {
+          (row.color as string).split('/').forEach((c: string) => all.add(c.trim()));
+        });
+        return Array.from(all).sort();
+      }),
       knex('cards').distinct('type').orderBy('type').then((r) => r.map((row) => row.type)),
       knex('cards').distinct('rarity').then((r) => {
         const rarityOrder = ['Common', 'Uncommon', 'Rare', 'Super Rare', 'Legendary', 'Enchanted', 'Promo'];
@@ -181,7 +187,7 @@ export class CardsService {
       where.set = { setId: { $in: filters.sets } };
     }
     if (filters.colors?.length) {
-      where.color = { $in: filters.colors };
+      where.color = { $re: filters.colors.join('|') };
     }
     if (filters.types?.length) {
       where.type = { $in: filters.types };

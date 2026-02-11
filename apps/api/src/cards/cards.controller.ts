@@ -1,19 +1,24 @@
 import {
   Controller,
   Get,
+  Post,
   Param,
   Query,
   NotFoundException,
   UseGuards,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
+import { CardSyncService } from './card-sync.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import type { CardQueryDto } from '@lorcana/shared';
 
 @Controller('api/cards')
 @UseGuards(JwtAuthGuard)
 export class CardsController {
-  constructor(private readonly cardsService: CardsService) {}
+  constructor(
+    private readonly cardsService: CardsService,
+    private readonly cardSyncService: CardSyncService,
+  ) {}
 
   @Get()
   async findAll(
@@ -61,6 +66,12 @@ export class CardsController {
     @Query('franchise') franchise?: string,
   ) {
     return this.cardsService.findCharacters(search, franchise);
+  }
+
+  @Post('sync')
+  async sync() {
+    await this.cardSyncService.syncCards();
+    return { message: 'Card sync completed' };
   }
 
   @Get(':uniqueId')

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useCreateCollection } from '@/hooks/useCollections';
-import { useCards } from '@/hooks/useCards';
+import { useInfiniteCards } from '@/hooks/useCards';
 import { FilterBuilder } from '@/components/collections/FilterBuilder';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,7 +16,13 @@ export function CollectionCreatePage() {
   const createMutation = useCreateCollection();
   const navigate = useNavigate();
 
-  const { data: preview, isLoading: previewLoading } = useCards({
+  const {
+    data: preview,
+    isLoading: previewLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteCards({
     sets: filters.sets,
     colors: filters.colors,
     types: filters.types,
@@ -24,8 +30,29 @@ export function CollectionCreatePage() {
     classifications: filters.classifications,
     characterNames: filters.characterNames,
     franchises: filters.franchises,
-    pageSize: 20,
+    pageSize: 40,
   });
+
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const handleIntersect = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage, isFetchingNextPage],
+  );
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(handleIntersect, { rootMargin: '200px' });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [handleIntersect]);
+
+  const allCards = preview?.pages.flatMap((p) => p.data) ?? [];
+  const total = preview?.pages[0]?.total;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,7 +104,7 @@ export function CollectionCreatePage() {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center rounded-full bg-enchant/10 border border-enchant/20 px-3 py-1 text-xs font-semibold text-enchant">
-                {preview?.total ?? '...'} cards match
+                {total ?? '...'} cards match
               </span>
             </div>
 
@@ -85,22 +112,27 @@ export function CollectionCreatePage() {
               <div className="flex justify-center py-12">
                 <Loader2 className="h-5 w-5 animate-spin text-magic" />
               </div>
-            ) : preview && preview.data.length > 0 ? (
-              <div
-                className="grid gap-2"
-                style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))' }}
-              >
-                {preview.data.map((card) => (
-                  <div key={card.uniqueId} className="overflow-hidden rounded-lg">
-                    <img
-                      src={card.imageUrl}
-                      alt={card.name}
-                      loading="lazy"
-                      className="aspect-[3/4] w-full rounded-lg object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
+            ) : allCards.length > 0 ? (
+              <>
+                <div
+                  className="grid gap-2"
+                  style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))' }}
+                >
+                  {allCards.map((card) => (
+                    <div key={card.uniqueId} className="overflow-hidden rounded-lg">
+                      <img
+                        src={card.imageUrl}
+                        alt={card.name}
+                        loading="lazy"
+                        className="aspect-[3/4] w-full rounded-lg object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div ref={sentinelRef} className="flex justify-center py-4">
+                  {isFetchingNextPage && <Loader2 className="h-5 w-5 animate-spin text-magic" />}
+                </div>
+              </>
             ) : (
               <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
                 No matching cards to preview

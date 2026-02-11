@@ -26,6 +26,7 @@ export interface CollectionWithStats extends Collection {
 export interface CollectionCardEntry {
   uniqueId: string;
   name: string;
+  version?: string;
   artist: string;
   setId: string;
   setName: string;

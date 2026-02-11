@@ -32,6 +32,7 @@ interface LorcastCard {
   cost: number;
   inkwell: boolean;
   ink: string | null;
+  inks: string[] | null;
   type: string[];
   classifications: string[] | null;
   text: string;
@@ -155,7 +156,7 @@ export class CardSyncService implements OnApplicationBootstrap {
           set,
           setName: apiCard.set.name,
           cardNum: apiCard.collector_number.padStart(4, '0'),
-          color: apiCard.ink ?? '',
+          color: apiCard.ink ?? apiCard.inks?.join('/') ?? '',
           type: apiCard.type.join(', '),
           rarity: apiCard.rarity.replace(/_/g, ' '),
           cost: apiCard.cost,

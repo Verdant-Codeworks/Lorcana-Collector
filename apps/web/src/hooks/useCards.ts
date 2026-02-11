@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { cardsApi } from '../api/cards';
 import type { CardQueryDto } from '@lorcana/shared';
 
@@ -6,6 +6,16 @@ export function useCards(query: CardQueryDto = {}) {
   return useQuery({
     queryKey: ['cards', query],
     queryFn: () => cardsApi.list(query),
+  });
+}
+
+export function useInfiniteCards(query: Omit<CardQueryDto, 'page'>) {
+  return useInfiniteQuery({
+    queryKey: ['cards-infinite', query],
+    queryFn: ({ pageParam }) => cardsApi.list({ ...query, page: pageParam }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
   });
 }
 
