@@ -6,7 +6,16 @@ import axios from 'axios';
 import { CardEntity } from './card.entity';
 import { SetEntity } from './set.entity';
 import { ConfigService } from '@nestjs/config';
-import { franchiseMap } from './franchise-map';
+
+interface LorcanaJsonCard {
+  setCode: string;
+  number: number;
+  story?: string;
+}
+
+interface LorcanaJsonResponse {
+  cards: LorcanaJsonCard[];
+}
 
 interface LorcastSet {
   id: string;
@@ -68,12 +77,14 @@ interface LorcastResponse<T> {
 export class CardSyncService implements OnApplicationBootstrap {
   private readonly logger = new Logger(CardSyncService.name);
   private readonly apiUrl: string;
+  private readonly lorcanaJsonUrl: string;
 
   constructor(
     private readonly orm: MikroORM,
     private readonly configService: ConfigService,
   ) {
     this.apiUrl = this.configService.get('LORCAST_API_URL', 'https://api.lorcast.com/v0');
+    this.lorcanaJsonUrl = this.configService.get('LORCANA_JSON_URL', 'https://lorcanajson.org/files/current/en/allCards.json');
   }
 
   async onApplicationBootstrap() {
@@ -90,11 +101,30 @@ export class CardSyncService implements OnApplicationBootstrap {
     this.logger.log('Starting card sync from Lorcast...');
     try {
       const em = this.orm.em.fork() as SqlEntityManager;
+      const storyMap = await this.fetchStoryMap();
       const sets = await this.syncSets(em);
-      await this.syncAllCards(em, sets);
+      await this.syncAllCards(em, sets, storyMap);
       this.logger.log('Card sync completed successfully');
     } catch (error) {
       this.logger.error('Card sync failed', error instanceof Error ? error.stack : error);
+    }
+  }
+
+  private async fetchStoryMap(): Promise<Map<string, string>> {
+    try {
+      this.logger.log('Fetching story data from LorcanaJSON...');
+      const { data } = await axios.get<LorcanaJsonResponse>(this.lorcanaJsonUrl);
+      const storyMap = new Map<string, string>();
+      for (const card of data.cards) {
+        if (card.story) {
+          storyMap.set(`${card.setCode}_${card.number}`, card.story);
+        }
+      }
+      this.logger.log(`Built story map with ${storyMap.size} entries`);
+      return storyMap;
+    } catch (error) {
+      this.logger.warn('Failed to fetch LorcanaJSON data, franchise data will be empty', error instanceof Error ? error.message : error);
+      return new Map();
     }
   }
 
@@ -129,7 +159,7 @@ export class CardSyncService implements OnApplicationBootstrap {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  private async syncAllCards(em: SqlEntityManager, sets: LorcastSet[]) {
+  private async syncAllCards(em: SqlEntityManager, sets: LorcastSet[], storyMap: Map<string, string>) {
     const now = new Date();
     let totalCards = 0;
 
@@ -148,7 +178,8 @@ export class CardSyncService implements OnApplicationBootstrap {
       for (const apiCard of cards) {
         const existing = await em.findOne(CardEntity, { uniqueId: apiCard.id });
         const characterName = apiCard.version ? apiCard.name : undefined;
-        const franchise = characterName ? franchiseMap[characterName] : undefined;
+        const storyKey = `${apiCard.set.code}_${parseInt(apiCard.collector_number, 10)}`;
+        const franchise = storyMap.get(storyKey) || undefined;
 
         const cardData = {
           name: apiCard.name,
