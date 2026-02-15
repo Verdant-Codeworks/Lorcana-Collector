@@ -44,7 +44,7 @@ export class AuthController {
   @UseGuards(GoogleAuthGuard)
   async googleCallback(@Req() req: any, @Res() res: any) {
     const { accessToken } = await this.authService.oauthLogin(req.user);
-    const frontendUrl = this.configService.get('FRONTEND_URL', 'http://localhost:5173');
+    const frontendUrl = this.configService.get('FRONTEND_URL', 'http://localhost:5174');
     res.redirect(`${frontendUrl}/auth/callback?token=${accessToken}`);
   }
 
@@ -58,7 +58,7 @@ export class AuthController {
   @UseGuards(DiscordAuthGuard)
   async discordCallback(@Req() req: any, @Res() res: any) {
     const { accessToken } = await this.authService.oauthLogin(req.user);
-    const frontendUrl = this.configService.get('FRONTEND_URL', 'http://localhost:5173');
+    const frontendUrl = this.configService.get('FRONTEND_URL', 'http://localhost:5174');
     res.redirect(`${frontendUrl}/auth/callback?token=${accessToken}`);
   }
 

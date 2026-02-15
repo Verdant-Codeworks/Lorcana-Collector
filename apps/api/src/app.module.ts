@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
@@ -10,7 +11,7 @@ import { CollectionsModule } from './collections/collections.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env', join(__dirname, '..', '..', '..', '.env')] }),
     MikroOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => getDatabaseConfig(configService),
