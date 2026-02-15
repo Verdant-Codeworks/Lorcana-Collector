@@ -11,6 +11,7 @@ export const cardsApi = {
     if (query.classifications?.length) params.set('classifications', query.classifications.join(','));
     if (query.characterNames?.length) params.set('characterNames', query.characterNames.join(','));
     if (query.franchises?.length) params.set('franchises', query.franchises.join(','));
+    if (query.artists?.length) params.set('artists', query.artists.join(','));
     if (query.search) params.set('search', query.search);
     if (query.page) params.set('page', String(query.page));
     if (query.pageSize) params.set('pageSize', String(query.pageSize));

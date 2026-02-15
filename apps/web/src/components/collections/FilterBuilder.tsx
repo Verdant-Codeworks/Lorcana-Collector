@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useSets, useCardFilters } from '@/hooks/useCards';
 import { Badge } from '@/components/ui/badge';
-import { Loader2 } from 'lucide-react';
+import { Loader2, X } from 'lucide-react';
 import { cn, INK_ICONS } from '@/lib/utils';
 import { CharacterPicker } from './CharacterPicker';
 import {
@@ -105,6 +106,69 @@ function ColorSelect({
   );
 }
 
+function ArtistSelect({
+  artists,
+  selected,
+  onChange,
+}: {
+  artists: string[];
+  selected: string[];
+  onChange: (selected: string[]) => void;
+}) {
+  const [search, setSearch] = useState('');
+  const filtered = search
+    ? artists.filter((a) => a.toLowerCase().includes(search.toLowerCase()))
+    : artists;
+
+  const remove = (artist: string) => onChange(selected.filter((a) => a !== artist));
+  const toggle = (artist: string) => {
+    if (selected.includes(artist)) {
+      remove(artist);
+    } else {
+      onChange([...selected, artist]);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      {selected.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {selected.map((artist) => (
+            <Badge key={artist} variant="default" className="cursor-pointer gap-1" onClick={() => remove(artist)}>
+              {artist}
+              <X className="h-3 w-3" />
+            </Badge>
+          ))}
+        </div>
+      )}
+      <input
+        type="text"
+        placeholder="Search artists..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="w-full rounded-md border border-border bg-background px-3 py-1.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+      />
+      <div className="max-h-48 overflow-y-auto">
+        <div className="flex flex-wrap gap-1.5">
+          {filtered.map((artist) => (
+            <Badge
+              key={artist}
+              variant={selected.includes(artist) ? 'default' : 'outline'}
+              className="cursor-pointer"
+              onClick={() => toggle(artist)}
+            >
+              {artist}
+            </Badge>
+          ))}
+          {filtered.length === 0 && (
+            <p className="text-sm text-muted-foreground">No artists found</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function selectionCount(arr?: string[]) {
   return arr?.length ? ` (${arr.length})` : '';
 }
@@ -190,6 +254,19 @@ export function FilterBuilder({ filters, onChange }: FilterBuilderProps) {
             options={cardFilters.rarities}
             selected={filters.rarities || []}
             onChange={(rarities) => onChange({ ...filters, rarities: rarities.length ? rarities : undefined })}
+          />
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="artists">
+        <AccordionTrigger>
+          Artists{selectionCount(filters.artists)}
+        </AccordionTrigger>
+        <AccordionContent>
+          <ArtistSelect
+            artists={cardFilters.artists}
+            selected={filters.artists || []}
+            onChange={(artists) => onChange({ ...filters, artists: artists.length ? artists : undefined })}
           />
         </AccordionContent>
       </AccordionItem>

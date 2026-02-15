@@ -38,6 +38,9 @@ export class CardsService {
     } else if (query.franchises?.length) {
       where.franchise = { $in: query.franchises };
     }
+    if (query.artists?.length) {
+      where.artist = { $in: query.artists };
+    }
     if (query.search) {
       where.name = { $ilike: `%${query.search}%` };
     }
@@ -85,7 +88,7 @@ export class CardsService {
   async findFilters(): Promise<CardFiltersResponse> {
     const knex = this.em.getKnex();
 
-    const [colors, types, rarities, classifications, characterNames, franchises] = await Promise.all([
+    const [colors, types, rarities, classifications, characterNames, franchises, artists] = await Promise.all([
       knex('cards').distinct('color').where('color', '!=', '').orderBy('color').then((r) => {
         const all = new Set<string>();
         r.forEach((row) => {
@@ -125,9 +128,13 @@ export class CardsService {
         .whereNotNull('franchise')
         .orderBy('franchise')
         .then((r) => r.map((row) => row.franchise as string)),
+      knex('cards').distinct('artist')
+        .where('artist', '!=', '')
+        .orderBy('artist')
+        .then((r) => r.map((row) => row.artist as string)),
     ]);
 
-    return { colors, types, rarities, classifications, characterNames, franchises };
+    return { colors, types, rarities, classifications, characterNames, franchises, artists };
   }
 
   async findCharacters(search?: string, franchise?: string): Promise<CharacterDiscoveryResponse> {
@@ -181,6 +188,7 @@ export class CardsService {
     classifications?: string[];
     characterNames?: string[];
     franchises?: string[];
+    artists?: string[];
   }): FilterQuery<CardEntity> {
     const where: FilterQuery<CardEntity> = {};
     if (filters.sets?.length) {
@@ -207,6 +215,9 @@ export class CardsService {
       where.characterName = { $in: filters.characterNames };
     } else if (filters.franchises?.length) {
       where.franchise = { $in: filters.franchises };
+    }
+    if (filters.artists?.length) {
+      where.artist = { $in: filters.artists };
     }
     return where;
   }

@@ -30,6 +30,7 @@ export function CollectionCreatePage() {
     classifications: filters.classifications,
     characterNames: filters.characterNames,
     franchises: filters.franchises,
+    artists: filters.artists,
     pageSize: 40,
   });
 
@@ -93,11 +94,21 @@ export function CollectionCreatePage() {
 
         <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
           {/* Left: Filters */}
-          <div className="rounded-lg border border-border bg-card p-4">
-            <p className="mb-3 text-sm text-muted-foreground">
-              Select which cards should be included. Leave empty to include all cards.
-            </p>
-            <FilterBuilder filters={filters} onChange={setFilters} />
+          <div className="space-y-4 lg:sticky lg:top-4 lg:self-start">
+            <div className="rounded-lg border border-border bg-card p-4">
+              <p className="mb-3 text-sm text-muted-foreground">
+                Select which cards should be included. Leave empty to include all cards.
+              </p>
+              <FilterBuilder filters={filters} onChange={setFilters} />
+            </div>
+            <div className="flex gap-2">
+              <Button variant="enchanted" type="submit" disabled={!name || createMutation.isPending}>
+                {createMutation.isPending ? 'Creating...' : 'Create Collection'}
+              </Button>
+              <Button type="button" variant="outline" onClick={() => navigate('/dashboard')}>
+                Cancel
+              </Button>
+            </div>
           </div>
 
           {/* Right: Live preview */}
@@ -141,14 +152,6 @@ export function CollectionCreatePage() {
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <Button variant="enchanted" type="submit" disabled={!name || createMutation.isPending}>
-            {createMutation.isPending ? 'Creating...' : 'Create Collection'}
-          </Button>
-          <Button type="button" variant="outline" onClick={() => navigate('/dashboard')}>
-            Cancel
-          </Button>
-        </div>
       </form>
     </div>
   );

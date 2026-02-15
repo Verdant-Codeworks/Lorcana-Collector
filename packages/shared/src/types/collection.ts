@@ -6,6 +6,7 @@ export interface CollectionFilters {
   classifications?: string[];
   characterNames?: string[];
   franchises?: string[];
+  artists?: string[];
 }
 
 export interface Collection {

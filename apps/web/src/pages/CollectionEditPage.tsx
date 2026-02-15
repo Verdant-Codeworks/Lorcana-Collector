@@ -43,6 +43,7 @@ export function CollectionEditPage() {
     classifications: filters.classifications,
     characterNames: filters.characterNames,
     franchises: filters.franchises,
+    artists: filters.artists,
     pageSize: 40,
   });
 
@@ -113,11 +114,21 @@ export function CollectionEditPage() {
 
         <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
           {/* Left: Filters */}
-          <div className="rounded-lg border border-border bg-card p-4">
-            <p className="mb-3 text-sm text-muted-foreground">
-              Select which cards should be included. Leave empty to include all cards.
-            </p>
-            <FilterBuilder filters={filters} onChange={setFilters} />
+          <div className="space-y-4 lg:sticky lg:top-4 lg:self-start">
+            <div className="rounded-lg border border-border bg-card p-4">
+              <p className="mb-3 text-sm text-muted-foreground">
+                Select which cards should be included. Leave empty to include all cards.
+              </p>
+              <FilterBuilder filters={filters} onChange={setFilters} />
+            </div>
+            <div className="flex gap-2">
+              <Button variant="enchanted" type="submit" disabled={!name || updateMutation.isPending}>
+                {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+              </Button>
+              <Button type="button" variant="outline" onClick={() => navigate(`/collections/${id}`)}>
+                Cancel
+              </Button>
+            </div>
           </div>
 
           {/* Right: Live preview */}
@@ -161,14 +172,6 @@ export function CollectionEditPage() {
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <Button variant="enchanted" type="submit" disabled={!name || updateMutation.isPending}>
-            {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
-          </Button>
-          <Button type="button" variant="outline" onClick={() => navigate(`/collections/${id}`)}>
-            Cancel
-          </Button>
-        </div>
       </form>
     </div>
   );

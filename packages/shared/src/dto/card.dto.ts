@@ -6,6 +6,7 @@ export interface CardQueryDto {
   classifications?: string[];
   characterNames?: string[];
   franchises?: string[];
+  artists?: string[];
   search?: string;
   page?: number;
   pageSize?: number;
@@ -19,6 +20,7 @@ export interface CardFiltersResponse {
   classifications: string[];
   characterNames: string[];
   franchises: string[];
+  artists: string[];
 }
 
 export interface CharacterInfo {
