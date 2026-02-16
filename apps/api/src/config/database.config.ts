@@ -17,7 +17,7 @@ export function getDatabaseConfig(configService: ConfigService) {
         }),
     ...(databaseUrl && {
       driverOptions: {
-        connection: { ssl: { rejectUnauthorized: false }, family: 4 },
+        connection: { ssl: { rejectUnauthorized: false } },
       },
     }),
     entities: ['./dist/**/*.entity.js'],
