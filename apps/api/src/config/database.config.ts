@@ -19,6 +19,11 @@ export function getDatabaseConfig(configService: ConfigService) {
       driverOptions: {
         connection: { ssl: { rejectUnauthorized: false } },
       },
+      pool: {
+        min: 0,
+        max: 5,
+        idleTimeoutMillis: 30_000,
+      },
     }),
     entities: ['./dist/**/*.entity.js'],
     entitiesTs: ['./src/**/*.entity.ts'],

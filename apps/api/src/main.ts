@@ -9,9 +9,11 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Auto-sync database schema in development
-  const orm = app.get(MikroORM);
-  await orm.getSchemaGenerator().updateSchema();
+  // Auto-sync database schema in development only
+  if (!process.env.DATABASE_URL) {
+    const orm = app.get(MikroORM);
+    await orm.getSchemaGenerator().updateSchema();
+  }
 
   app.useGlobalPipes(
     new ValidationPipe({
