@@ -21,10 +21,8 @@ export function HeroSection({ scrollY, reducedMotion }: HeroSectionProps) {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center gap-6 text-center">
-        <img src="/logo.svg" alt="Illumineer Vault" className="h-16 animate-float" />
-        <h1 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
-          Illumineer Vault
-        </h1>
+        <img src="/favicon.svg" alt="Illumineer Vault" className="mx-auto block h-20 w-20 animate-float" />
+        <h1 className="text-3xl font-bold sm:text-4xl lg:text-5xl">Illumineer Vault</h1>
         <p className="max-w-md text-lg text-muted-foreground">
           Your personal Disney Lorcana collection tracker. Browse, collect, and complete your card sets.
         </p>
