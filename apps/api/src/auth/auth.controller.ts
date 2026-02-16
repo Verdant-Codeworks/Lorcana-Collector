@@ -71,6 +71,12 @@ export class AuthController {
     return this.authService.toAuthUser(user);
   }
 
+  @Get('export')
+  @UseGuards(JwtAuthGuard)
+  async exportData(@CurrentUser() user: UserEntity) {
+    return this.usersService.exportData(user.id);
+  }
+
   @Delete('account')
   @UseGuards(JwtAuthGuard)
   async deleteAccount(@CurrentUser() user: UserEntity) {

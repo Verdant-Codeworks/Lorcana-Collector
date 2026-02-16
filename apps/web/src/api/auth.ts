@@ -11,6 +11,9 @@ export const authApi = {
   getMe: () =>
     api.get<AuthUser>('/auth/me').then((r) => r.data),
 
+  exportData: () =>
+    api.get('/auth/export').then((r) => r.data),
+
   deleteAccount: () =>
     api.delete('/auth/account').then((r) => r.data),
 };

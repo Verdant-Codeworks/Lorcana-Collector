@@ -69,6 +69,32 @@ export class UsersService {
     return bcrypt.compare(password, user.passwordHash);
   }
 
+  async exportData(userId: string) {
+    const user = await this.em.findOneOrFail(UserEntity, { id: userId });
+    const knex = this.em.getKnex();
+
+    const collections = await knex('collections')
+      .select('id', 'name', 'description', 'filters', 'created_at', 'updated_at')
+      .where('user_id', userId);
+
+    const ownedCards = await knex('user_cards')
+      .join('cards', 'user_cards.card_unique_id', 'cards.unique_id')
+      .select('cards.unique_id', 'cards.name', 'cards.set_id', 'cards.card_num', 'user_cards.count', 'user_cards.added_at')
+      .where('user_cards.user_id', userId);
+
+    return {
+      account: {
+        id: user.id,
+        email: user.email,
+        displayName: user.displayName,
+        createdAt: user.createdAt,
+      },
+      collections,
+      ownedCards,
+      exportedAt: new Date().toISOString(),
+    };
+  }
+
   async deleteAccount(userId: string): Promise<void> {
     const knex = this.em.getKnex();
     // Delete user's owned cards, collections, then the user

@@ -17,7 +17,8 @@ import {
   DialogTitle,
   DialogClose,
 } from '@/components/ui/dialog';
-import { LogOut, Trash2, ChevronDown } from 'lucide-react';
+import { LogOut, Trash2, ChevronDown, Download } from 'lucide-react';
+import { authApi } from '@/api/auth';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
@@ -35,6 +36,17 @@ export function Navbar() {
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const handleExportData = async () => {
+    const data = await authApi.exportData();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'illumineer-vault-export.json';
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleDeleteAccount = async () => {
@@ -82,6 +94,10 @@ export function Navbar() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleExportData}>
+                    <Download className="h-4 w-4" />
+                    Export my data
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="h-4 w-4" />
                     Sign out
