@@ -1,9 +1,32 @@
 import { Link } from 'react-router';
 import { Footer } from '@/components/layout/Footer';
+import { SEO } from '@/components/seo/SEO';
 
 export function HomePage() {
   return (
     <div className="relative flex min-h-screen flex-col bg-background overflow-hidden">
+      <SEO
+        description="Track your Disney Lorcana card collection. Browse cards, build collections by set, color, and character."
+        canonicalUrl="/"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'WebApplication',
+          name: 'Illumineer Vault',
+          description: 'Track your Disney Lorcana card collection. Browse cards, build collections by set, color, and character.',
+          url: 'https://illumineer-vault.com',
+          applicationCategory: 'GameApplication',
+          operatingSystem: 'Web',
+          offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD',
+          },
+          creator: {
+            '@type': 'Organization',
+            name: 'Verdant Codeworks',
+          },
+        }}
+      />
       {/* Ambient inkwell glow */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-magic/8 blur-[120px]" />
@@ -15,6 +38,7 @@ export function HomePage() {
         <div className="w-full max-w-lg space-y-8 text-center">
           <div className="flex flex-col items-center gap-4">
             <img src="/logo.svg" alt="Illumineer Vault" className="h-12" />
+            <h1 className="text-3xl font-bold">Illumineer Vault</h1>
             <p className="text-lg text-muted-foreground">
               Your personal Disney Lorcana collection tracker
             </p>

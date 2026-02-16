@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
+import { BrowserRouter, Routes, Route } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { useAuthStore } from '@/stores/auth.store';
@@ -16,6 +16,7 @@ import { CollectionEditPage } from '@/pages/CollectionEditPage';
 import { BrowseCardsPage } from '@/pages/BrowseCardsPage';
 import { PrivacyPage } from '@/pages/PrivacyPage';
 import { TermsPage } from '@/pages/TermsPage';
+import { NotFoundPage } from '@/pages/NotFoundPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,7 +57,7 @@ function AppRoutes() {
         <Route path="/collections/:id/edit" element={<CollectionEditPage />} />
         <Route path="/collections/:id" element={<CollectionPage />} />
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

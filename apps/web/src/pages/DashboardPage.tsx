@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { SEO } from '@/components/seo/SEO';
 import { useCollections, useDeleteCollection } from '@/hooks/useCollections';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -61,6 +62,7 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      <SEO title="My Collections" canonicalUrl="/dashboard" noindex />
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">My Collections</h1>
         <Link to="/collections/new">

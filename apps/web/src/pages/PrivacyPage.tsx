@@ -1,9 +1,15 @@
 import { Link } from 'react-router';
 import { Footer } from '@/components/layout/Footer';
+import { SEO } from '@/components/seo/SEO';
 
 export function PrivacyPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      <SEO
+        title="Privacy Policy"
+        description="Privacy policy for Illumineer Vault, a fan-made Disney Lorcana collection tracker."
+        canonicalUrl="/privacy"
+      />
       <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-12">
         <Link to="/login" className="mb-8 inline-block text-sm text-muted-foreground hover:text-foreground">
           &larr; Back

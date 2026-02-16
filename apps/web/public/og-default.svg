@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Main gradient background -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c0a1d"/>
+      <stop offset="100%" stop-color="#1a1530"/>
+    </linearGradient>
+
+    <!-- Text gradient: gold to purple -->
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d4a843"/>
+      <stop offset="50%" stop-color="#e2c068"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+
+    <!-- Glow effect filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Subtle glow for accent elements -->
+    <filter id="subtleGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+
+  <!-- Subtle decorative circles for depth -->
+  <circle cx="150" cy="80" r="120" fill="#7c3aed" opacity="0.05"/>
+  <circle cx="1050" cy="550" r="150" fill="#d4a843" opacity="0.03"/>
+
+  <!-- Vault icon (larger version) -->
+  <g transform="translate(600, 150)">
+    <defs>
+      <filter id="vaultGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+        <feFlood flood-color="#7c3aed" flood-opacity="0.4" result="colorFlood"/>
+        <feComposite in="colorFlood" in2="coloredBlur" operator="in" result="colorBlur"/>
+        <feMerge>
+          <feMergeNode in="colorBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- Vault box with glow -->
+    <rect x="-40" y="-40" width="80" height="80" rx="8" fill="#0c0a1d" stroke="#d4a843" stroke-width="3" filter="url(#vaultGlow)"/>
+
+    <!-- Vault dial -->
+    <circle cx="0" cy="0" r="20" fill="none" stroke="#d4a843" stroke-width="2" opacity="0.8"/>
+    <circle cx="0" cy="-18" r="4" fill="#7c3aed"/>
+
+    <!-- Sparkles -->
+    <g fill="#d4a843" opacity="0.9">
+      <path d="M 35,-15 l 1,2 2,1 -2,1 -1,2 -1,-2 -2,-1 2,-1 z"/>
+      <path d="M -35,15 l 1,2 2,1 -2,1 -1,2 -1,-2 -2,-1 2,-1 z"/>
+    </g>
+  </g>
+
+  <!-- Main title -->
+  <text
+    x="600"
+    y="340"
+    font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    font-size="96"
+    font-weight="700"
+    fill="url(#textGradient)"
+    text-anchor="middle"
+    letter-spacing="-2"
+    filter="url(#glow)"
+  >
+    Illumineer Vault
+  </text>
+
+  <!-- Tagline -->
+  <text
+    x="600"
+    y="430"
+    font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    font-size="40"
+    font-weight="400"
+    fill="#e2c068"
+    text-anchor="middle"
+    opacity="0.95"
+  >
+    Track Your Disney Lorcana Collection
+  </text>
+
+  <!-- Bottom accent line -->
+  <line x1="300" y1="520" x2="900" y2="520" stroke="url(#textGradient)" stroke-width="2" opacity="0.4"/>
+
+  <!-- Powered by text -->
+  <text
+    x="600"
+    y="580"
+    font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    font-size="18"
+    font-weight="400"
+    fill="#d4a843"
+    text-anchor="middle"
+    opacity="0.7"
+  >
+    Powered by Verdant Codeworks
+  </text>
+</svg>

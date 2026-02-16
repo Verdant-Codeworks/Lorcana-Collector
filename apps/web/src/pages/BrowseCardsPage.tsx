@@ -4,8 +4,22 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { InkBadge } from '@/components/ui/ink-badge';
 import { Button } from '@/components/ui/button';
+import { SEO } from '@/components/seo/SEO';
 import { Loader2, Search } from 'lucide-react';
 import type { CardQueryDto } from '@illumineer-vault/shared';
+
+const BROWSE_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Disney Lorcana Card Catalog',
+  description: 'Browse the complete Disney Lorcana card catalog. Filter by set, color, type, and rarity.',
+  url: 'https://illumineer-vault.com/browse',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'Illumineer Vault',
+    url: 'https://illumineer-vault.com',
+  },
+};
 
 export function BrowseCardsPage() {
   const [query, setQuery] = useState<CardQueryDto>({ pageSize: 40 });
@@ -29,6 +43,12 @@ export function BrowseCardsPage() {
 
   return (
     <div className="space-y-6">
+      <SEO
+        title="Browse Cards"
+        description="Browse the complete Disney Lorcana card catalog. Filter by set, color, type, and rarity."
+        canonicalUrl="/browse"
+        jsonLd={BROWSE_JSON_LD}
+      />
       <h1 className="text-2xl font-bold">Browse Cards</h1>
 
       <form onSubmit={handleSearch} className="flex gap-2">
@@ -118,6 +138,10 @@ export function BrowseCardsPage() {
           )}
         </>
       ) : null}
+
+      <p className="text-center text-xs text-muted-foreground pt-4">
+        Card images and data are property of Disney and Ravensburger. Displayed for personal collection tracking purposes only.
+      </p>
     </div>
   );
 }

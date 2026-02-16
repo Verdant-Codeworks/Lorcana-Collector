@@ -17,7 +17,7 @@ export function Footer() {
           <a href="https://lorcanajson.org" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
             LorcanaJSON
           </a>
-          . Card images are property of Disney / Ravensburger.
+          . Card images are property of Disney / Ravensburger. All trademarks are property of their respective owners.
         </p>
         <div className="flex items-center justify-center gap-3 text-xs text-muted-foreground">
           <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>

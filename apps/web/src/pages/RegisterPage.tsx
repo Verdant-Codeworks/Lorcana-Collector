@@ -1,9 +1,16 @@
 import { RegisterForm } from '@/components/auth/RegisterForm';
 import { Footer } from '@/components/layout/Footer';
+import { SEO } from '@/components/seo/SEO';
 
 export function RegisterPage() {
   return (
     <div className="relative flex min-h-screen flex-col bg-background overflow-hidden">
+      <SEO
+        title="Create Account"
+        description="Create a free Illumineer Vault account to start tracking your Disney Lorcana collection."
+        canonicalUrl="/register"
+        noindex
+      />
       {/* Ambient inkwell glow */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-magic/8 blur-[120px]" />

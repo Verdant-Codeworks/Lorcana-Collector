@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router';
+import { SEO } from '@/components/seo/SEO';
 import { useCollectionView, useSetCardOwnership } from '@/hooks/useCollections';
 import { CardGrid } from '@/components/cards/CardGrid';
 import { CardListItem } from '@/components/cards/CardListItem';
@@ -92,6 +93,7 @@ export function CollectionPage() {
 
   return (
     <div className="space-y-6">
+      <SEO title={data.collection.name} noindex />
       <div className="flex items-center gap-4">
         <Link to="/dashboard">
           <Button variant="outline" size="icon" className="border-magic/20">

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router';
+import { SEO } from '@/components/seo/SEO';
 import { useCreateCollection } from '@/hooks/useCollections';
 import { useInfiniteCards } from '@/hooks/useCards';
 import { FilterBuilder } from '@/components/collections/FilterBuilder';
@@ -67,6 +68,7 @@ export function CollectionCreatePage() {
 
   return (
     <div className="space-y-6">
+      <SEO title="New Collection" noindex />
       <h1 className="text-2xl font-bold">New Collection</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">

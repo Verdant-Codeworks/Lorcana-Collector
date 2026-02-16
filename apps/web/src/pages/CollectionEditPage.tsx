@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { SEO } from '@/components/seo/SEO';
 import { useCollectionView, useUpdateCollection } from '@/hooks/useCollections';
 import { useInfiniteCards } from '@/hooks/useCards';
 import { FilterBuilder } from '@/components/collections/FilterBuilder';
@@ -87,6 +88,7 @@ export function CollectionEditPage() {
 
   return (
     <div className="space-y-6">
+      <SEO title="Edit Collection" noindex />
       <h1 className="text-2xl font-bold">Edit Collection</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">

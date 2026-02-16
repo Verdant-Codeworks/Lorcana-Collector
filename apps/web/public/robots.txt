@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /browse
+Allow: /privacy
+Allow: /terms
+Disallow: /login
+Disallow: /register
+Disallow: /dashboard
+Disallow: /collections
+Disallow: /auth/
+Disallow: /api/
+
+Sitemap: https://illumineer-vault.com/sitemap.xml
