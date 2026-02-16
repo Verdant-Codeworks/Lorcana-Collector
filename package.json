@@ -13,6 +13,6 @@
     "node": ">=20"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["bcrypt", "@nestjs/core", "esbuild"]
+    "onlyBuiltDependencies": ["@nestjs/core", "esbuild"]
   }
 }
