@@ -1,10 +1,19 @@
-import { Link } from 'react-router';
 import { Footer } from '@/components/layout/Footer';
 import { SEO } from '@/components/seo/SEO';
+import { useParallax } from '@/hooks/useParallax';
+import { ParallaxLayer } from '@/components/landing/ParallaxLayer';
+import { HeroSection } from '@/components/landing/HeroSection';
+import { FeatureSection } from '@/components/landing/FeatureSection';
+import { BrowseMockup } from '@/components/landing/BrowseMockup';
+import { CollectionsMockup } from '@/components/landing/CollectionsMockup';
+import { TrackingMockup } from '@/components/landing/TrackingMockup';
+import { CTASection } from '@/components/landing/CTASection';
 
 export function HomePage() {
+  const { scrollY, reducedMotion } = useParallax();
+
   return (
-    <div className="relative flex min-h-screen flex-col bg-background overflow-hidden">
+    <div className="relative min-h-screen bg-background overflow-hidden">
       <SEO
         description="Track your Disney Lorcana card collection. Browse cards, build collections by set, color, and character."
         canonicalUrl="/"
@@ -27,61 +36,70 @@ export function HomePage() {
           },
         }}
       />
-      {/* Ambient inkwell glow */}
+
+      {/* Parallax ambient glow orbs */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-magic/8 blur-[120px]" />
-        <div className="absolute left-1/3 top-1/3 h-[300px] w-[300px] rounded-full bg-enchant/6 blur-[100px]" />
-        <div className="absolute right-1/3 bottom-1/3 h-[200px] w-[200px] rounded-full bg-primary/8 blur-[80px]" />
+        <ParallaxLayer scrollY={scrollY} speed={-0.05} reducedMotion={reducedMotion}>
+          <div className="absolute left-1/2 top-[20%] -translate-x-1/2 h-[600px] w-[600px] rounded-full bg-magic/8 blur-[120px]" />
+        </ParallaxLayer>
+        <ParallaxLayer scrollY={scrollY} speed={-0.1} reducedMotion={reducedMotion}>
+          <div className="absolute left-[20%] top-[50%] h-[400px] w-[400px] rounded-full bg-enchant/6 blur-[100px]" />
+        </ParallaxLayer>
+        <ParallaxLayer scrollY={scrollY} speed={-0.03} reducedMotion={reducedMotion}>
+          <div className="absolute right-[15%] top-[70%] h-[300px] w-[300px] rounded-full bg-primary/8 blur-[80px]" />
+        </ParallaxLayer>
+        <ParallaxLayer scrollY={scrollY} speed={-0.07} reducedMotion={reducedMotion}>
+          <div className="absolute left-[40%] top-[120%] h-[500px] w-[500px] rounded-full bg-magic/6 blur-[140px]" />
+        </ParallaxLayer>
       </div>
 
-      <div className="relative flex flex-1 items-center justify-center px-4">
-        <div className="w-full max-w-lg space-y-8 text-center">
-          <div className="flex flex-col items-center gap-4">
-            <img src="/logo.svg" alt="Illumineer Vault" className="h-12" />
-            <h1 className="text-3xl font-bold">Illumineer Vault</h1>
-            <p className="text-lg text-muted-foreground">
-              Your personal Disney Lorcana collection tracker
-            </p>
-          </div>
+      {/* Hero */}
+      <HeroSection scrollY={scrollY} reducedMotion={reducedMotion} />
 
-          <div className="rounded-lg border border-magic/15 bg-card/90 p-6 backdrop-blur-sm shadow-[var(--shadow-glow-mixed)]">
-            <ul className="space-y-3 text-sm text-muted-foreground text-left">
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5 text-primary">&#9670;</span>
-                <span>Browse the complete Lorcana card catalog with powerful filters</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5 text-primary">&#9670;</span>
-                <span>Track your collection and see what you own at a glance</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-0.5 text-primary">&#9670;</span>
-                <span>Create collections by character, franchise, release set, and more</span>
-              </li>
-            </ul>
-          </div>
+      {/* Feature: Browse Cards */}
+      <FeatureSection
+        title="Browse the Complete Card Catalog"
+        description="Search and filter through every Lorcana card ever released."
+        bullets={[
+          'Powerful search by name',
+          'Filter by set, ink color, type, and rarity',
+          'Responsive card grid with details on hover',
+        ]}
+        mockup={<BrowseMockup />}
+        accentColor="enchant"
+      />
 
-          <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link
-              to="/browse"
-              className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition-colors"
-            >
-              Browse Cards
-            </Link>
-            <Link
-              to="/login"
-              className="inline-flex h-10 items-center justify-center rounded-md border border-magic/20 bg-card/80 px-6 text-sm font-medium text-foreground shadow-sm hover:bg-card transition-colors"
-            >
-              Sign In
-            </Link>
-          </div>
+      {/* Feature: Organize Collections */}
+      <FeatureSection
+        title="Build & Organize Collections"
+        description="Create custom collections based on any combination of filters."
+        bullets={[
+          'Filter by set, character, franchise, artist, and more',
+          'Track multiple collections independently',
+          'See card counts and match previews',
+        ]}
+        mockup={<CollectionsMockup />}
+        reversed
+        accentColor="magic"
+      />
 
-          <p className="text-xs text-muted-foreground">
-            Create a free account to start building your collection
-          </p>
-        </div>
-      </div>
+      {/* Feature: Track Progress */}
+      <FeatureSection
+        title="Track Every Card You Own"
+        description="Mark cards as owned, track quantities, and watch your completion grow."
+        bullets={[
+          'Visual owned vs. unowned states',
+          'Quantity tracking with count badges',
+          'Completion progress by set with collapsible groups',
+        ]}
+        mockup={<TrackingMockup />}
+        accentColor="primary"
+      />
 
+      {/* CTA */}
+      <CTASection />
+
+      {/* Footer */}
       <Footer />
     </div>
   );
