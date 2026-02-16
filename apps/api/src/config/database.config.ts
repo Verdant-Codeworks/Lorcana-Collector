@@ -15,6 +15,11 @@ export function getDatabaseConfig(configService: ConfigService) {
           user: configService.get('DATABASE_USER', 'postgres'),
           password: configService.get('DATABASE_PASSWORD', 'postgres'),
         }),
+    ...(databaseUrl && {
+      driverOptions: {
+        connection: { ssl: { rejectUnauthorized: false } },
+      },
+    }),
     entities: ['./dist/**/*.entity.js'],
     entitiesTs: ['./src/**/*.entity.ts'],
     extensions: [Migrator],
