@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { collectionsApi } from '../api/collections';
-import type { CreateCollectionDto, UpdateCollectionDto } from '@lorcana/shared';
+import type { CreateCollectionDto, UpdateCollectionDto } from '@illumineer-vault/shared';
 
 export function useCollections() {
   return useQuery({

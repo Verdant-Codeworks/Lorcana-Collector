@@ -1,7 +1,23 @@
+import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
 import { useAuthStore } from '@/stores/auth.store';
+import { useDeleteAccount } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { LogOut, Wand2 } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from '@/components/ui/dialog';
+import { LogOut, Trash2, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
@@ -13,20 +29,24 @@ export function Navbar() {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const deleteAccount = useDeleteAccount();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  const handleDeleteAccount = async () => {
+    await deleteAccount.mutateAsync();
+    navigate('/login');
+  };
+
   return (
     <nav className="border-b border-magic/20 bg-card/80 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
-        <Link to="/dashboard" className="flex items-center gap-2 text-lg font-bold">
-          <Wand2 className="h-5 w-5 text-enchant" />
-          <span className="bg-gradient-to-r from-magic via-primary to-enchant bg-clip-text text-transparent">
-            Lorcana Collector
-          </span>
+        <Link to="/dashboard" className="flex items-center gap-2">
+          <img src="/logo.svg" alt="Illumineer Vault" className="h-7" />
         </Link>
 
         <div className="flex items-center gap-1">
@@ -54,12 +74,52 @@ export function Navbar() {
           {user && (
             <>
               <div className="mx-3 h-5 w-px bg-border" />
-              <span className="text-sm text-muted-foreground">
-                {user.displayName || user.email}
-              </span>
-              <Button variant="ghost" size="icon" onClick={handleLogout}>
-                <LogOut className="h-4 w-4" />
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground">
+                    {user.displayName || user.email}
+                    <ChevronDown className="h-3 w-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="h-4 w-4" />
+                    Sign out
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="text-destructive focus:text-destructive"
+                    onClick={() => setDeleteDialogOpen(true)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Delete account
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Delete your account?</DialogTitle>
+                  </DialogHeader>
+                  <p className="text-sm text-muted-foreground">
+                    This will permanently delete your account, all collections, and all card
+                    ownership data. This action cannot be undone.
+                  </p>
+                  <div className="flex justify-end gap-2">
+                    <DialogClose asChild>
+                      <Button variant="ghost">Cancel</Button>
+                    </DialogClose>
+                    <Button
+                      variant="destructive"
+                      onClick={handleDeleteAccount}
+                      disabled={deleteAccount.isPending}
+                    >
+                      {deleteAccount.isPending ? 'Deleting...' : 'Delete my account'}
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </>
           )}
         </div>

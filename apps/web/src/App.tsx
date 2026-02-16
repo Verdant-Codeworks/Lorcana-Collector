@@ -13,6 +13,8 @@ import { CollectionCreatePage } from '@/pages/CollectionCreatePage';
 import { CollectionPage } from '@/pages/CollectionPage';
 import { CollectionEditPage } from '@/pages/CollectionEditPage';
 import { BrowseCardsPage } from '@/pages/BrowseCardsPage';
+import { PrivacyPage } from '@/pages/PrivacyPage';
+import { TermsPage } from '@/pages/TermsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +37,8 @@ function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/auth/callback" element={<OAuthCallbackPage />} />
+      <Route path="/privacy" element={<PrivacyPage />} />
+      <Route path="/terms" element={<TermsPage />} />
       <Route
         element={
           <ProtectedRoute>

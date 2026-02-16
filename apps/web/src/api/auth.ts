@@ -1,5 +1,5 @@
 import { api } from './client';
-import type { LoginResponse, AuthUser, RegisterDto, LoginDto } from '@lorcana/shared';
+import type { LoginResponse, AuthUser, RegisterDto, LoginDto } from '@illumineer-vault/shared';
 
 export const authApi = {
   register: (data: RegisterDto) =>
@@ -10,4 +10,7 @@ export const authApi = {
 
   getMe: () =>
     api.get<AuthUser>('/auth/me').then((r) => r.data),
+
+  deleteAccount: () =>
+    api.delete('/auth/account').then((r) => r.data),
 };

@@ -10,7 +10,7 @@ import {
 import { CardsService } from './cards.service';
 import { CardSyncService } from './card-sync.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import type { CardQueryDto } from '@lorcana/shared';
+import type { CardQueryDto } from '@illumineer-vault/shared';
 
 @Controller('api/cards')
 @UseGuards(JwtAuthGuard)

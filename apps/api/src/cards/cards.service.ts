@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EntityManager, FilterQuery } from '@mikro-orm/postgresql';
 import { CardEntity } from './card.entity';
 import { SetEntity } from './set.entity';
-import type { CardQueryDto, PaginatedResponse, Card, CardFiltersResponse, SetInfo, CharacterDiscoveryResponse } from '@lorcana/shared';
+import type { CardQueryDto, PaginatedResponse, Card, CardFiltersResponse, SetInfo, CharacterDiscoveryResponse } from '@illumineer-vault/shared';
 
 @Injectable()
 export class CardsService {

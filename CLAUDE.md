@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Lorcana-Collector — a Disney Lorcana trading card game collection tracker.
+Illumineer Vault — a fan-made Disney Lorcana trading card game collection tracker, powered by Verdant Codeworks.
 
 ## Tech Stack
 
@@ -17,13 +17,13 @@ Lorcana-Collector — a Disney Lorcana trading card game collection tracker.
 ## Common Commands
 
 ```bash
-pnpm install                           # Install all workspace deps
-pnpm build                             # Build all packages
-pnpm --filter @lorcana/shared build    # Build shared types
-pnpm --filter @lorcana/api build       # Build backend
-pnpm --filter @lorcana/api dev         # Run backend in dev mode
-pnpm --filter @lorcana/web build       # Build frontend
-pnpm --filter @lorcana/web dev         # Run frontend dev server
+pnpm install                                  # Install all workspace deps
+pnpm build                                    # Build all packages
+pnpm --filter @illumineer-vault/shared build  # Build shared types
+pnpm --filter @illumineer-vault/api build     # Build backend
+pnpm --filter @illumineer-vault/api dev       # Run backend in dev mode
+pnpm --filter @illumineer-vault/web build     # Build frontend
+pnpm --filter @illumineer-vault/web dev       # Run frontend dev server
 ```
 
 ## Architecture

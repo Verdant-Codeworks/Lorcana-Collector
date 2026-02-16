@@ -1,12 +1,12 @@
 {
-  "name": "lorcana-collector",
+  "name": "illumineer-vault",
   "version": "0.0.1",
   "private": true,
   "description": "Disney Lorcana trading card collection tracker",
   "scripts": {
     "build": "pnpm -r build",
-    "dev:api": "pnpm --filter @lorcana/api dev",
-    "dev:web": "pnpm --filter @lorcana/web dev",
+    "dev:api": "pnpm --filter @illumineer-vault/api dev",
+    "dev:web": "pnpm --filter @illumineer-vault/web dev",
     "dev": "pnpm run dev:api & pnpm run dev:web"
   },
   "engines": {

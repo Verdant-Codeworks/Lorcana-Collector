@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import type { CollectionCardEntry } from '@lorcana/shared';
+import type { CollectionCardEntry } from '@illumineer-vault/shared';
 
 interface CardTileProps {
   card: CollectionCardEntry;

@@ -2,7 +2,7 @@ import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/co
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { UserEntity } from '../users/user.entity';
-import type { LoginResponse, AuthUser } from '@lorcana/shared';
+import type { LoginResponse, AuthUser } from '@illumineer-vault/shared';
 
 @Injectable()
 export class AuthService {

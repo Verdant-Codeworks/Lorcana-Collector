@@ -68,4 +68,12 @@ export class UsersService {
     if (!user.passwordHash) return false;
     return bcrypt.compare(password, user.passwordHash);
   }
+
+  async deleteAccount(userId: string): Promise<void> {
+    const knex = this.em.getKnex();
+    // Delete user's owned cards, collections, then the user
+    await knex('user_cards').where('user_id', userId).delete();
+    await knex('collections').where('user_id', userId).delete();
+    await knex('users').where('id', userId).delete();
+  }
 }

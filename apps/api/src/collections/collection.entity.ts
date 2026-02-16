@@ -1,7 +1,7 @@
 import { Entity, PrimaryKey, Property, ManyToOne } from '@mikro-orm/core';
 import { v4 } from 'uuid';
 import { UserEntity } from '../users/user.entity';
-import type { CollectionFilters } from '@lorcana/shared';
+import type { CollectionFilters } from '@illumineer-vault/shared';
 
 @Entity({ tableName: 'collections' })
 export class CollectionEntity {

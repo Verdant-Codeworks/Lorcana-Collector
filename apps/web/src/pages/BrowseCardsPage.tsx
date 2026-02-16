@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { InkBadge } from '@/components/ui/ink-badge';
 import { Button } from '@/components/ui/button';
 import { Loader2, Search } from 'lucide-react';
-import type { CardQueryDto } from '@lorcana/shared';
+import type { CardQueryDto } from '@illumineer-vault/shared';
 
 export function BrowseCardsPage() {
   const [query, setQuery] = useState<CardQueryDto>({ pageSize: 40 });

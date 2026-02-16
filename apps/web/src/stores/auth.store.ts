@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { AuthUser } from '@lorcana/shared';
+import type { AuthUser } from '@illumineer-vault/shared';
 import { authApi } from '../api/auth';
 
 interface AuthState {

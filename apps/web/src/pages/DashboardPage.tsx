@@ -3,7 +3,7 @@ import { useCollections, useDeleteCollection } from '@/hooks/useCollections';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Plus, Trash2, Loader2 } from 'lucide-react';
-import type { CollectionWithStats } from '@lorcana/shared';
+import type { CollectionWithStats } from '@illumineer-vault/shared';
 
 function CollectionCard({ collection }: { collection: CollectionWithStats }) {
   const deleteMutation = useDeleteCollection();

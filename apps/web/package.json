@@ -1,5 +1,5 @@
 {
-  "name": "@lorcana/web",
+  "name": "@illumineer-vault/web",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@lorcana/shared": "workspace:*",
+    "@illumineer-vault/shared": "workspace:*",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-dialog": "^1.1.0",
     "@radix-ui/react-dropdown-menu": "^2.1.0",

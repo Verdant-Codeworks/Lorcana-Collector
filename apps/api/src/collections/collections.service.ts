@@ -11,7 +11,7 @@ import type {
   CollectionCardEntry,
   CreateCollectionDto,
   UpdateCollectionDto,
-} from '@lorcana/shared';
+} from '@illumineer-vault/shared';
 
 @Injectable()
 export class CollectionsService {

@@ -1,5 +1,5 @@
 import { CardTile } from './CardTile';
-import type { CollectionCardEntry } from '@lorcana/shared';
+import type { CollectionCardEntry } from '@illumineer-vault/shared';
 
 interface CardGridProps {
   cards: CollectionCardEntry[];

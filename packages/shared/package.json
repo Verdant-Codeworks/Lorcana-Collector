@@ -1,5 +1,5 @@
 {
-  "name": "@lorcana/shared",
+  "name": "@illumineer-vault/shared",
   "version": "0.0.1",
   "private": true,
   "main": "./dist/index.js",

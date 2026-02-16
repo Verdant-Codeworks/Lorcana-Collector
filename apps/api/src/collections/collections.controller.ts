@@ -12,7 +12,7 @@ import { CollectionsService } from './collections.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { UserEntity } from '../users/user.entity';
-import type { CreateCollectionDto, UpdateCollectionDto, SetCardOwnershipDto } from '@lorcana/shared';
+import type { CreateCollectionDto, UpdateCollectionDto, SetCardOwnershipDto } from '@illumineer-vault/shared';
 
 @Controller('api/collections')
 @UseGuards(JwtAuthGuard)

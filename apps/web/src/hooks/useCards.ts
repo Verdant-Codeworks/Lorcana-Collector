@@ -1,6 +1,6 @@
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { cardsApi } from '../api/cards';
-import type { CardQueryDto } from '@lorcana/shared';
+import type { CardQueryDto } from '@illumineer-vault/shared';
 
 export function useCards(query: CardQueryDto = {}) {
   return useQuery({

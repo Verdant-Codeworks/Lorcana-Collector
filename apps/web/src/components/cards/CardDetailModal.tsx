@@ -7,7 +7,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { InkBadge } from '@/components/ui/ink-badge';
 import { Minus, Plus } from 'lucide-react';
-import type { CollectionCardEntry } from '@lorcana/shared';
+import type { CollectionCardEntry } from '@illumineer-vault/shared';
 
 interface CardDetailModalProps {
   card: CollectionCardEntry | null;

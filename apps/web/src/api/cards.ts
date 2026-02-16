@@ -1,5 +1,5 @@
 import { api } from './client';
-import type { Card, SetInfo, PaginatedResponse, CardFiltersResponse, CardQueryDto, CharacterDiscoveryResponse } from '@lorcana/shared';
+import type { Card, SetInfo, PaginatedResponse, CardFiltersResponse, CardQueryDto, CharacterDiscoveryResponse } from '@illumineer-vault/shared';
 
 export const cardsApi = {
   list: (query: CardQueryDto = {}) => {

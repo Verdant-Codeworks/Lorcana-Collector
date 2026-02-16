@@ -27,7 +27,7 @@ export function RegisterForm() {
     <div className="mx-auto w-full max-w-sm space-y-6">
       <div className="text-center">
         <h1 className="text-2xl font-bold">Create account</h1>
-        <p className="text-sm text-muted-foreground">Start tracking your Lorcana collection</p>
+        <p className="text-sm text-muted-foreground">Start tracking your Disney Lorcana collection</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">

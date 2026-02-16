@@ -4,7 +4,7 @@ import type {
   CollectionView,
   CreateCollectionDto,
   UpdateCollectionDto,
-} from '@lorcana/shared';
+} from '@illumineer-vault/shared';
 
 export const collectionsApi = {
   list: () =>

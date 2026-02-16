@@ -7,7 +7,7 @@ import { CardDetailModal } from '@/components/cards/CardDetailModal';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, LayoutGrid, List, Loader2, Pencil, ChevronDown, ChevronRight } from 'lucide-react';
-import type { CollectionCardEntry } from '@lorcana/shared';
+import type { CollectionCardEntry } from '@illumineer-vault/shared';
 
 interface SetGroup {
   setId: string;

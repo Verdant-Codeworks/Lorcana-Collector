@@ -2,6 +2,7 @@ import {
   Controller,
   Post,
   Get,
+  Delete,
   Body,
   UseGuards,
   Req,
@@ -13,12 +14,14 @@ import { GoogleAuthGuard } from './guards/google-auth.guard';
 import { DiscordAuthGuard } from './guards/discord-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { UserEntity } from '../users/user.entity';
+import { UsersService } from '../users/users.service';
 import { ConfigService } from '@nestjs/config';
 
 @Controller('api/auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
+    private readonly usersService: UsersService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -66,5 +69,12 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   getProfile(@CurrentUser() user: UserEntity) {
     return this.authService.toAuthUser(user);
+  }
+
+  @Delete('account')
+  @UseGuards(JwtAuthGuard)
+  async deleteAccount(@CurrentUser() user: UserEntity) {
+    await this.usersService.deleteAccount(user.id);
+    return { message: 'Account deleted successfully' };
   }
 }

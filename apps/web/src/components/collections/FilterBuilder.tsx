@@ -10,7 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import type { CollectionFilters } from '@lorcana/shared';
+import type { CollectionFilters } from '@illumineer-vault/shared';
 
 interface FilterBuilderProps {
   filters: CollectionFilters;
