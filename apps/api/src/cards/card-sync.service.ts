@@ -11,6 +11,7 @@ interface LorcanaJsonCard {
   setCode: string;
   number: number;
   story?: string;
+  promoGrouping?: string;
 }
 
 interface LorcanaJsonResponse {
@@ -116,7 +117,7 @@ export class CardSyncService implements OnApplicationBootstrap {
       const { data } = await axios.get<LorcanaJsonResponse>(this.lorcanaJsonUrl);
       const storyMap = new Map<string, string>();
       for (const card of data.cards) {
-        if (card.story) {
+        if (card.story && !card.promoGrouping) {
           storyMap.set(`${card.setCode}_${card.number}`, card.story);
         }
       }
