@@ -140,7 +140,7 @@ export function BrowseCardsPage() {
       ) : null}
 
       <p className="text-center text-xs text-muted-foreground pt-4">
-        Card images and data are property of Disney and Ravensburger. Displayed for personal collection tracking purposes only.
+        Card images, names, and game content are intellectual property of Ravensburger and Disney. Displayed here solely for personal collection tracking purposes.
       </p>
     </div>
   );

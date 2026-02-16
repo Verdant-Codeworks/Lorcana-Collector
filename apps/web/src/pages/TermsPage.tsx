@@ -51,10 +51,12 @@ export function TermsPage() {
           <section>
             <h2 className="mb-2 text-lg font-semibold text-foreground">4. Intellectual Property</h2>
             <p>
-              Disney Lorcana, card images, card text, and related game content are the intellectual
-              property of Disney and Ravensburger. Card data displayed in Illumineer Vault is sourced from
-              publicly available APIs (Lorcast, LorcanaJSON) and is used under fair use for the
-              purpose of collection tracking.
+              Disney Lorcana, including but not limited to card names, card images, card text, logos,
+              illustrations, characters, game mechanics, and related content, are copyrights, trademarks,
+              and/or other intellectual property owned, controlled, or licensed by Ravensburger and/or
+              Disney. This project does not claim ownership of any Lorcana-related intellectual property.
+              Card metadata displayed in Illumineer Vault is sourced from publicly available community
+              APIs (Lorcast, LorcanaJSON) and is used solely for personal collection tracking purposes.
             </p>
             <p className="mt-2">
               The Illumineer Vault application source code is licensed under the MIT License.

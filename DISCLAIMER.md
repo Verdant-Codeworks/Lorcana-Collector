@@ -6,20 +6,22 @@ Illumineer Vault is a fan-made, non-commercial, open-source Disney Lorcana colle
 
 ## Intellectual Property
 
-Disney Lorcana, all card names, card text, card images, game mechanics, and related content are the intellectual property of **The Walt Disney Company** and **Ravensburger AG**. All trademarks are property of their respective owners.
+Disney Lorcana, including but not limited to all card names, card text, card images, logos, illustrations, characters, game mechanics, and related content, are copyrights, trademarks, and/or other intellectual property owned, controlled, or licensed by **Ravensburger AG** and/or **The Walt Disney Company**. All trademarks are property of their respective owners.
+
+This project does not claim ownership of any Lorcana-related intellectual property.
 
 ## Card Data
 
-Card data displayed in Illumineer Vault is sourced from publicly available community APIs:
+Card metadata (names, set information, types, etc.) displayed in Illumineer Vault is sourced from publicly available community-maintained APIs:
 
 - [Lorcast](https://lorcast.com)
 - [LorcanaJSON](https://lorcanajson.org)
 
-Card images are hotlinked from external sources and are **not stored, hosted, or redistributed** by this project.
+Card images are hotlinked from external sources and are **not stored, hosted, or redistributed** by this project. No copyrighted images are included in this repository.
 
-## Fair Use
+## Purpose & Use
 
-This project is intended solely for personal, non-commercial collection tracking purposes. The use of card names and metadata falls under fair use for the purpose of enabling fans to organize and track their personal card collections.
+This project is intended solely as a personal, non-commercial tool to help fans organize and track their physical card collections. It does not reproduce, distribute, or create derivative works from copyrighted game content. If the rights holders determine that any aspect of this project infringes on their intellectual property, we will comply promptly with any requests to modify or remove infringing content.
 
 ## Contact
 
