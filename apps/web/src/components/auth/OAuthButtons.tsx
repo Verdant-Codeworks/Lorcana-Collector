@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/button';
 
+const apiBase = import.meta.env.VITE_API_URL || '';
+
 export function OAuthButtons() {
   return (
     <div className="space-y-2">
@@ -14,13 +16,13 @@ export function OAuthButtons() {
       <div className="grid grid-cols-2 gap-2">
         <Button
           variant="outline"
-          onClick={() => { window.location.href = '/api/auth/google'; }}
+          onClick={() => { window.location.href = `${apiBase}/api/auth/google`; }}
         >
           Google
         </Button>
         <Button
           variant="outline"
-          onClick={() => { window.location.href = '/api/auth/discord'; }}
+          onClick={() => { window.location.href = `${apiBase}/api/auth/discord`; }}
         >
           Discord
         </Button>

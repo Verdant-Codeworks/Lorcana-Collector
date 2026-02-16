@@ -6,9 +6,12 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Auto-sync database schema in development only
-  if (!process.env.DATABASE_URL) {
-    const orm = app.get(MikroORM);
+  const orm = app.get(MikroORM);
+  if (process.env.DATABASE_URL) {
+    // Production: run pending migrations
+    await orm.getMigrator().up();
+  } else {
+    // Development: auto-sync schema from entities
     await orm.getSchemaGenerator().updateSchema();
   }
 

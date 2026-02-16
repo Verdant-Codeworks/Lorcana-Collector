@@ -29,7 +29,7 @@ export function getDatabaseConfig(configService: ConfigService) {
     entitiesTs: ['./src/**/*.entity.ts'],
     extensions: [Migrator],
     migrations: {
-      path: './src/migrations',
+      path: './dist/migrations',
       pathTs: './src/migrations',
     },
     schemaGenerator: {
