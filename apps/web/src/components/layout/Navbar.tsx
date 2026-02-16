@@ -21,7 +21,11 @@ import { LogOut, Trash2, ChevronDown, Download } from 'lucide-react';
 import { authApi } from '@/api/auth';
 import { cn } from '@/lib/utils';
 
-const navLinks = [
+const publicNavLinks = [
+  { to: '/browse', label: 'Browse Cards' },
+];
+
+const authNavLinks = [
   { to: '/dashboard', label: 'Collections' },
   { to: '/browse', label: 'Browse Cards' },
 ];
@@ -57,12 +61,12 @@ export function Navbar() {
   return (
     <nav className="border-b border-magic/20 bg-card/80 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
-        <Link to="/dashboard" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <img src="/logo.svg" alt="Illumineer Vault" className="h-7" />
         </Link>
 
         <div className="flex items-center gap-1">
-          {navLinks.map((link) => {
+          {(user ? authNavLinks : publicNavLinks).map((link) => {
             const isActive = location.pathname === link.to || location.pathname.startsWith(link.to + '/');
             return (
               <Link
@@ -82,6 +86,17 @@ export function Navbar() {
               </Link>
             );
           })}
+
+          {!user && (
+            <>
+              <div className="mx-3 h-5 w-px bg-border" />
+              <Link to="/login">
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                  Sign In
+                </Button>
+              </Link>
+            </>
+          )}
 
           {user && (
             <>

@@ -8,6 +8,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { LoginPage } from '@/pages/LoginPage';
 import { RegisterPage } from '@/pages/RegisterPage';
 import { OAuthCallbackPage } from '@/pages/OAuthCallbackPage';
+import { HomePage } from '@/pages/HomePage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { CollectionCreatePage } from '@/pages/CollectionCreatePage';
 import { CollectionPage } from '@/pages/CollectionPage';
@@ -34,11 +35,15 @@ function AppRoutes() {
 
   return (
     <Routes>
+      <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/auth/callback" element={<OAuthCallbackPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/terms" element={<TermsPage />} />
+      <Route element={<AppShell />}>
+        <Route path="/browse" element={<BrowseCardsPage />} />
+      </Route>
       <Route
         element={
           <ProtectedRoute>
@@ -50,9 +55,8 @@ function AppRoutes() {
         <Route path="/collections/new" element={<CollectionCreatePage />} />
         <Route path="/collections/:id/edit" element={<CollectionEditPage />} />
         <Route path="/collections/:id" element={<CollectionPage />} />
-        <Route path="/browse" element={<BrowseCardsPage />} />
       </Route>
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

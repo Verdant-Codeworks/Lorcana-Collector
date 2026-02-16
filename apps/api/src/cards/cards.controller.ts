@@ -13,7 +13,6 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import type { CardQueryDto } from '@illumineer-vault/shared';
 
 @Controller('api/cards')
-@UseGuards(JwtAuthGuard)
 export class CardsController {
   constructor(
     private readonly cardsService: CardsService,
@@ -71,6 +70,7 @@ export class CardsController {
   }
 
   @Post('sync')
+  @UseGuards(JwtAuthGuard)
   async sync() {
     await this.cardSyncService.syncCards();
     return { message: 'Card sync completed' };
